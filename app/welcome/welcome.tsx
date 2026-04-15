@@ -142,7 +142,7 @@ export function Welcome({ message }: { message: string }) {
 						{/* Monthly Calendar View */}
 						<section className="glass-card p-6 rounded-3xl">
 							<div className="flex items-center justify-between mb-6">
-								<h2 className="font-bold">April 2026</h2>
+								<h2 className="font-bold">September 2026</h2>
 								<div className="flex gap-2">
 									<button className="p-1 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg">
 										<svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
@@ -156,17 +156,22 @@ export function Welcome({ message }: { message: string }) {
 								<span>SUN</span><span>MON</span><span>TUE</span><span>WED</span><span>THU</span><span>FRI</span><span>SAT</span>
 							</div>
 							<div className="grid grid-cols-7 gap-1">
+								{/* Sept 1 2026 is a Tuesday, so add 2 empty cells for SUN and MON */}
+								{Array.from({ length: 2 }).map((_, i) => (
+									<div key={`empty-${i}`} className="aspect-square" />
+								))}
 								{Array.from({ length: 30 }).map((_, i) => {
 									const day = i + 1;
-									const isToday = day === 15;
-									const hasEvent = [2, 10, 22].includes(day);
+									const isToday = false;
+									const hasEvent = [24, 25, 28, 29].includes(day);
 									return (
 										<div 
 											key={i} 
 											className={`aspect-square flex items-center justify-center rounded-xl text-sm cursor-pointer transition-all
 												${isToday ? 'bg-[var(--color-brand-primary)] text-white font-bold shadow-lg shadow-blue-500/30 ring-2 ring-white/50' : 'hover:bg-slate-100 dark:hover:bg-slate-800'}
-												${hasEvent ? 'border-b-2 border-[var(--color-brand-accent)]' : ''}
+												${hasEvent ? 'bg-[var(--color-brand-accent)]/20 border-b-2 border-[var(--color-brand-accent)] font-bold text-[var(--color-brand-primary)]' : ''}
 											`}
+											title={day === 24 ? "English" : day === 25 ? "Mathematics" : day === 28 ? "Chinese" : day === 29 ? "Science" : ""}
 										>
 											{day}
 										</div>
@@ -174,12 +179,37 @@ export function Welcome({ message }: { message: string }) {
 								})}
 							</div>
 							<div className="mt-6 space-y-3">
-								<p className="text-xs font-bold text-slate-400 uppercase">Upcoming Events</p>
-								<div className="flex gap-3 items-center p-3 rounded-2xl bg-orange-100/50 dark:bg-orange-950/30">
-									<div className="w-2 h-2 rounded-full bg-orange-500 animate-pulse" />
+								<p className="text-xs font-bold text-slate-400 uppercase">Exam Schedule</p>
+								
+								<div className="flex gap-3 items-center p-3 rounded-2xl bg-purple-100/50 dark:bg-purple-950/30 border border-purple-200/50 dark:border-purple-900/50">
+									<div className="w-2 h-2 rounded-full bg-purple-500" />
 									<div className="text-xs">
-										<p className="font-bold text-orange-700 dark:text-orange-400">Mock Exam Part 1</p>
-										<p className="text-orange-600/70 dark:text-orange-400/50">Tomorrow at 8:00 AM</p>
+										<p className="font-bold text-purple-700 dark:text-purple-400">English Language</p>
+										<p className="text-purple-600/70 dark:text-purple-400/50">September 24</p>
+									</div>
+								</div>
+								
+								<div className="flex gap-3 items-center p-3 rounded-2xl bg-indigo-100/50 dark:bg-indigo-950/30 border border-indigo-200/50 dark:border-indigo-900/50">
+									<div className="w-2 h-2 rounded-full bg-indigo-500" />
+									<div className="text-xs">
+										<p className="font-bold text-indigo-700 dark:text-indigo-400">Mathematics</p>
+										<p className="text-indigo-600/70 dark:text-indigo-400/50">September 25</p>
+									</div>
+								</div>
+
+								<div className="flex gap-3 items-center p-3 rounded-2xl bg-pink-100/50 dark:bg-pink-950/30 border border-pink-200/50 dark:border-pink-900/50">
+									<div className="w-2 h-2 rounded-full bg-pink-500" />
+									<div className="text-xs">
+										<p className="font-bold text-pink-700 dark:text-pink-400">Chinese (Mother Tongue)</p>
+										<p className="text-pink-600/70 dark:text-pink-400/50">September 28</p>
+									</div>
+								</div>
+
+								<div className="flex gap-3 items-center p-3 rounded-2xl bg-emerald-100/50 dark:bg-emerald-950/30 border border-emerald-200/50 dark:border-emerald-900/50">
+									<div className="w-2 h-2 rounded-full bg-emerald-500" />
+									<div className="text-xs">
+										<p className="font-bold text-emerald-700 dark:text-emerald-400">Science</p>
+										<p className="text-emerald-600/70 dark:text-emerald-400/50">September 29</p>
 									</div>
 								</div>
 							</div>
