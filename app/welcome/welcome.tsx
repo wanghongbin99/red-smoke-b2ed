@@ -32,13 +32,20 @@ export function Welcome({ message }: { message: string }) {
 			<div className="max-w-7xl mx-auto space-y-8">
 				{/* Header Section */}
 				<header className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-					<div>
-						<h1 className="text-4xl md:text-5xl font-bold gradient-text tracking-tight">
-							P6 Excellence Hub
-						</h1>
-						<p className="text-slate-500 dark:text-slate-400 mt-2 text-lg">
-							Your path to PSLE success starts here.
-						</p>
+					<div className="flex items-center gap-4">
+						<img 
+							src="/logo.png" 
+							alt="Keen PSLE Logo" 
+							className="w-16 h-16 md:w-20 md:h-20 rounded-2xl shadow-lg shadow-blue-500/20 object-cover" 
+						/>
+						<div>
+							<h1 className="text-4xl md:text-5xl font-bold gradient-text tracking-tight">
+								P6 Excellence Hub
+							</h1>
+							<p className="text-slate-500 dark:text-slate-400 mt-2 text-lg">
+								Your path to PSLE success starts here.
+							</p>
+						</div>
 					</div>
 
 					{/* PSLE Countdown Card */}
