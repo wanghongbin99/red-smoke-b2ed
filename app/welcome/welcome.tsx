@@ -9,7 +9,7 @@ export function Welcome({ message }: { message: string }) {
 	});
 
 	// PSLE 2026 Written Papers usually start around Oct 1st
-	const psleDate = new Date("2026-10-01T08:00:00").getTime();
+	const psleDate = new Date("2026-09-20T08:00:00").getTime();
 
 	useEffect(() => {
 		const timer = setInterval(() => {
@@ -33,17 +33,18 @@ export function Welcome({ message }: { message: string }) {
 				{/* Header Section */}
 				<header className="flex flex-col md:flex-row md:items-center justify-between gap-6">
 					<div className="flex items-center gap-4">
-						<img 
-							src="/logo.png" 
-							alt="Keen PSLE Logo" 
-							className="w-16 h-16 md:w-20 md:h-20 rounded-2xl shadow-lg shadow-blue-500/20 object-cover" 
+						<img
+							src="/logo.png"
+							alt="Keen PSLE Logo"
+							className="w-16 h-16 md:w-20 md:h-20 rounded-2xl shadow-lg shadow-blue-500/20 object-cover"
 						/>
 						<div>
 							<h1 className="text-4xl md:text-5xl font-bold gradient-text tracking-tight">
-								P6 Excellence Hub
+								P6 Excellence Hub @ {new Date().toLocaleDateString()}
 							</h1>
 							<p className="text-slate-500 dark:text-slate-400 mt-2 text-lg">
-								Your path to PSLE success starts here.
+								可恩的PSLE成功之路从这里开始。
+								Keen's PSLE success starts here.
 							</p>
 						</div>
 					</div>
@@ -172,8 +173,8 @@ export function Welcome({ message }: { message: string }) {
 									const isToday = false;
 									const hasEvent = [24, 25, 28, 29].includes(day);
 									return (
-										<div 
-											key={i} 
+										<div
+											key={i}
 											className={`aspect-square flex items-center justify-center rounded-xl text-sm cursor-pointer transition-all
 												${isToday ? 'bg-[var(--color-brand-primary)] text-white font-bold shadow-lg shadow-blue-500/30 ring-2 ring-white/50' : 'hover:bg-slate-100 dark:hover:bg-slate-800'}
 												${hasEvent ? 'bg-[var(--color-brand-accent)]/20 border-b-2 border-[var(--color-brand-accent)] font-bold text-[var(--color-brand-primary)]' : ''}
@@ -187,7 +188,7 @@ export function Welcome({ message }: { message: string }) {
 							</div>
 							<div className="mt-6 space-y-3">
 								<p className="text-xs font-bold text-slate-400 uppercase">Exam Schedule</p>
-								
+
 								<div className="flex gap-3 items-center p-3 rounded-2xl bg-purple-100/50 dark:bg-purple-950/30 border border-purple-200/50 dark:border-purple-900/50">
 									<div className="w-2 h-2 rounded-full bg-purple-500" />
 									<div className="text-xs">
@@ -195,7 +196,7 @@ export function Welcome({ message }: { message: string }) {
 										<p className="text-purple-600/70 dark:text-purple-400/50">September 24</p>
 									</div>
 								</div>
-								
+
 								<div className="flex gap-3 items-center p-3 rounded-2xl bg-indigo-100/50 dark:bg-indigo-950/30 border border-indigo-200/50 dark:border-indigo-900/50">
 									<div className="w-2 h-2 rounded-full bg-indigo-500" />
 									<div className="text-xs">
