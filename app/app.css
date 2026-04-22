@@ -32,3 +32,14 @@ body {
         radial-gradient(at 100% 100%, hsla(190, 90%, 50%, 0.1) 0px, transparent 50%),
         radial-gradient(at 0% 100%, hsla(230, 85%, 60%, 0.1) 0px, transparent 50%);
 }
+
+/* Custom Scrollbar for PDF Lists */
+.custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-slate-300/50 rounded-full dark:bg-slate-700/50 hover:bg-slate-400 dark:hover:bg-slate-600;
+}

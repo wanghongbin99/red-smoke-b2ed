@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
-
+import papersData from "../papers.json";
 export function Welcome({ message }: { message: string }) {
+	const [activeSummary, setActiveSummary] = useState<{ filename: string; text: string } | null>(null);
+	const [loadingSummary, setLoadingSummary] = useState<string | null>(null);
 	const [timeLeft, setTimeLeft] = useState({
 		days: 0,
 		hours: 0,
@@ -26,6 +28,24 @@ export function Welcome({ message }: { message: string }) {
 
 		return () => clearInterval(timer);
 	}, [psleDate]);
+
+	const handleSummarize = async (paper: string) => {
+		if (loadingSummary) return;
+		setLoadingSummary(paper);
+		try {
+			const res = await fetch(`/api/summarize/${paper}`);
+			const data = await res.json();
+			if (data.summary) {
+				setActiveSummary({ filename: paper, text: data.summary });
+			} else {
+				alert("Summary failed: " + (data.error || "Unknown error"));
+			}
+		} catch (e) {
+			alert("Error fetching summary");
+		} finally {
+			setLoadingSummary(null);
+		}
+	};
 
 	return (
 		<main className="min-h-screen premium-bg p-4 md:p-8 font-sans">
@@ -121,23 +141,69 @@ export function Welcome({ message }: { message: string }) {
 
 						{/* Course Content Grid */}
 						<section className="space-y-4">
-							<h2 className="text-2xl font-bold px-2">Core Subjects</h2>
+							<h2 className="text-2xl font-bold px-2">Core Subjects & Papers</h2>
 							<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 								{subjects.map((subject, i) => (
-									<div key={i} className="glass-card p-6 rounded-3xl hover:scale-[1.02] transition-transform cursor-pointer group">
-										<div className={`w-12 h-12 rounded-2xl ${subject.bgColor} flex items-center justify-center mb-4 group-hover:rotate-6 transition-transform`}>
+									<div key={i} className="glass-card p-6 rounded-3xl group flex flex-col h-full">
+										<div className={`w-12 h-12 rounded-2xl ${subject.bgColor} flex items-center justify-center mb-4 group-hover:rotate-6 transition-transform shrink-0`}>
 											{subject.icon}
 										</div>
 										<h3 className="text-lg font-bold mb-2">{subject.title}</h3>
-										<p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+										<p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed mb-4">
 											{subject.description}
 										</p>
-										<div className="mt-4 flex flex-wrap gap-2">
+										
+										{/* Tags
+										<div className="mt-auto flex flex-wrap gap-2 mb-4">
 											{subject.tags.map((tag, j) => (
 												<span key={j} className="text-[10px] px-2 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 font-bold uppercase tracking-tighter">
 													{tag}
 												</span>
 											))}
+										</div>
+										*/}
+
+										<div className="mt-auto pt-4 border-t border-slate-100 dark:border-slate-800">
+											<h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">2025 Practice Papers</h4>
+											<div className="flex flex-col gap-2 max-h-56 overflow-y-auto pr-2 custom-scrollbar">
+												{(papersData as Record<string, string[]>)[subject.title]?.map((paper, j) => {
+													// Parse paper name: "P6_Chinese_2025_SA2_nanyang.pdf" -> "Nanyang"
+													const match = paper.match(/P6_[^_]+_2025_(SA2|WA2)_([^.]+)\.pdf/i);
+													let schoolName = paper;
+													if (match) {
+														schoolName = match[2].charAt(0).toUpperCase() + match[2].slice(1);
+														// Add Higher Chinese indication if applicable
+														if (paper.includes("HChinese")) {
+															schoolName += " (Higher)";
+														}
+													}
+													return (
+														<div key={j} className="flex items-center gap-2 group/link">
+															<a 
+																href={`/api/papers/${paper}`}
+																target="_blank"
+																rel="noopener noreferrer"
+																className="text-sm py-2 px-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 hover:bg-[var(--color-brand-primary)]/10 hover:text-[var(--color-brand-primary)] flex items-center gap-2 transition-colors flex-1 min-w-0"
+															>
+																<svg className="w-4 h-4 shrink-0 text-slate-400 group-hover/link:text-[var(--color-brand-primary)] transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+																	<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+																</svg>
+																<span className="truncate">{schoolName}</span>
+															</a>
+															<button
+																onClick={() => handleSummarize(paper)}
+																disabled={!!loadingSummary}
+																className={`p-2 rounded-xl transition-all ${loadingSummary === paper ? 'animate-pulse bg-amber-100 text-amber-600' : 'hover:bg-amber-100 hover:text-amber-600 text-slate-400'}`}
+																title="AI Summary"
+															>
+																<svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+																	<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+																</svg>
+															</button>
+														</div>
+													)
+												})}
+											</div>
 										</div>
 									</div>
 								))}
@@ -238,6 +304,47 @@ export function Welcome({ message }: { message: string }) {
 					<p>© 2026 P6 Learning Excellence Platform. All rights reserved.</p>
 					<p className="mt-1">Dedicated to the Singapore Primary 6 Class of 2026.</p>
 				</footer>
+				{/* AI Summary Modal */}
+				{activeSummary && (
+					<div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm animate-in fade-in duration-300">
+						<div className="glass-card w-full max-w-2xl max-h-[80vh] overflow-hidden flex flex-col rounded-3xl shadow-2xl animate-in zoom-in-95 duration-300">
+							<div className="p-6 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center bg-white/80 dark:bg-slate-900/80">
+								<div className="flex items-center gap-3">
+									<div className="w-10 h-10 rounded-xl bg-amber-100 flex items-center justify-center text-amber-600">
+										<svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+											<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+										</svg>
+									</div>
+									<div>
+										<h3 className="font-bold text-lg">AI Knowledge Insight</h3>
+										<p className="text-xs text-slate-500 truncate max-w-[300px]">{activeSummary.filename}</p>
+									</div>
+								</div>
+								<button 
+									onClick={() => setActiveSummary(null)}
+									className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors"
+								>
+									<svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+										<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+									</svg>
+								</button>
+							</div>
+							<div className="p-8 overflow-y-auto custom-scrollbar prose dark:prose-invert prose-sm max-w-none">
+								<div className="whitespace-pre-wrap text-slate-700 dark:text-slate-300 leading-relaxed text-base">
+									{activeSummary.text}
+								</div>
+							</div>
+							<div className="p-6 bg-slate-50/50 dark:bg-slate-800/50 border-t border-slate-100 dark:border-slate-800 flex justify-end">
+								<button 
+									onClick={() => setActiveSummary(null)}
+									className="px-6 py-2 bg-[var(--color-brand-primary)] text-white font-bold rounded-xl shadow-lg shadow-blue-500/20 hover:opacity-90 transition-opacity"
+								>
+									Got it, thanks!
+								</button>
+							</div>
+						</div>
+					</div>
+				)}
 			</div>
 		</main>
 	);

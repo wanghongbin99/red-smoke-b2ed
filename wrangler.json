@@ -16,6 +16,15 @@
 	"upload_source_maps": true,
 	"vars": {
 		"VALUE_FROM_CLOUDFLARE": "Hello from Cloudflare"
+	},
+	"r2_buckets": [
+		{
+			"bucket_name": "keen-psle-papers",
+			"binding": "BUCKET"
+		}
+	],
+	"ai": {
+		"binding": "AI"
 	}
 	/**
 	 * Smart Placement
