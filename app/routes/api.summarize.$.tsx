@@ -23,59 +23,61 @@ export async function loader({ params, context }: Route.LoaderArgs) {
       return new Response("Paper not found", { status: 404 });
     }
 
-    // 1. Convert PDF to Markdown using Cloudflare Workers AI's toMarkdown utility
-    const conversionResult = await ai.toMarkdown([
-      {
-        name: filename,
-        blob: new Blob([await object.arrayBuffer()], {
-          type: "application/pdf",
-        }),
-      },
-    ]);
-
-    console.log("Conversion Result:", JSON.stringify(conversionResult));
-    const markdownContent = conversionResult[0]?.content || "";
-
-    if (!markdownContent) {
-      return new Response(`Could not extract content from PDF. Conversion result: ${JSON.stringify(conversionResult)}`, { status: 500 });
+    // 1. First Attempt: Quick Markdown extraction
+    let markdownContent = "";
+    try {
+      const conversionResult = await ai.toMarkdown([
+        {
+          name: filename,
+          blob: new Blob([await object.arrayBuffer()], { type: "application/pdf" }),
+        },
+      ]);
+      markdownContent = conversionResult[0]?.content || "";
+    } catch (e) {
+      console.error("toMarkdown failed, falling back to Gemma 4 Vision:", e);
     }
 
-    // 2. Summarize using Llama 3
-    // We'll ask for a structured summary focused on PSLE knowledge points
-    const prompt = `
-      You are an expert PSLE (Primary School Leaving Examination) tutor in Singapore.
-      Analyze the following examination paper content and provide a concise summary for a student.
-      
-      Focus on:
-      1. Main Topics/Knowledge Points covered.
-      2. Difficulty level of the paper.
-      3. Key tips or common pitfalls identified from these questions.
-      
-      Format the output in clear Markdown. Use Chinese if the paper is a Chinese paper, otherwise use English.
-      
-      Content:
-      ${markdownContent.substring(0, 5000)} 
-    `;
+    let summary = "";
 
-    const aiResponse = await ai.run("@cf/meta/llama-3-8b-instruct", {
-      messages: [
-        { role: "system", content: "You are a helpful education assistant specializing in PSLE." },
-        { role: "user", content: prompt }
-      ]
-    });
+    if (markdownContent && markdownContent.trim().length > 50) {
+      // Path A: We have text, use Gemma 4 to summarize it
+      console.log("Using Path A: Text summarization");
+      const response = await ai.run("@cf/google/gemma-4-26b-a4b-it", {
+        messages: [
+          { role: "system", content: "You are an expert PSLE educator. Summarize the following exam paper content into key topics, difficulty level, and study tips in Chinese." },
+          { role: "user", content: `Please summarize this PSLE exam paper:\n\n${markdownContent.substring(0, 10000)}` }
+        ]
+      });
+      summary = (response as any).response || (response as any).content || JSON.stringify(response);
+    } else {
+      // Path B: Scanned PDF/Empty extraction, use Gemma 4 Multimodal Parsing
+      console.log("Using Path B: Multimodal PDF parsing with Gemma 4");
+      const pdfBuffer = await object.arrayBuffer();
+      const response = await ai.run("@cf/google/gemma-4-26b-a4b-it", {
+        messages: [
+          { 
+            role: "user", 
+            content: [
+              { type: "text", text: "这是一个新加坡 PSLE 考试试卷的 PDF 扫描件。请识别其中的题目内容，并为学生总结出：1. 核心知识点 2. 试卷难度分析 3. 复习建议。请用中文回答。" },
+              { type: "image", image: Array.from(new Uint8Array(pdfBuffer)) }
+            ]
+          }
+        ]
+      });
+      summary = (response as any).response || (response as any).content || JSON.stringify(response);
+    }
 
-    // Handle different response formats (depending on model version)
-    const summary = (aiResponse as any).response || (aiResponse as any).answer || "Summary generation failed.";
+    if (!summary) {
+      return new Response("AI failed to generate a summary.", { status: 500 });
+    }
 
-    return new Response(JSON.stringify({ summary }), {
-      headers: { "Content-Type": "application/json" },
-    });
+    return Response.json({ summary });
 
   } catch (error: any) {
-    console.error("AI Summarization Error:", error);
-    return new Response(JSON.stringify({ error: error.message }), {
+    console.error("Summarization error:", error);
+    return new Response(JSON.stringify({ error: `Server Error (500): ${error.message || "Unknown error"}` }), { 
       status: 500,
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json" }
     });
   }
 }
