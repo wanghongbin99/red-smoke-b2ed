@@ -9,6 +9,13 @@ export async function loader({ params, context }: Route.LoaderArgs) {
   const bucket = context.cloudflare.env.BUCKET;
   const ai = context.cloudflare.env.AI;
 
+  if (!bucket) {
+    return new Response(JSON.stringify({ error: "R2 BUCKET binding not found. Check your wrangler.json." }), { status: 500 });
+  }
+  if (!ai) {
+    return new Response(JSON.stringify({ error: "AI binding not found. Check your wrangler.json." }), { status: 500 });
+  }
+
   try {
     const object = await bucket.get(filename);
 

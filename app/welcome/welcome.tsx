@@ -34,14 +34,20 @@ export function Welcome({ message }: { message: string }) {
 		setLoadingSummary(paper);
 		try {
 			const res = await fetch(`/api/summarize/${paper}`);
+			if (!res.ok) {
+				const errorText = await res.text();
+				alert(`Server Error (${res.status}): ${errorText.substring(0, 100)}`);
+				return;
+			}
 			const data = await res.json();
 			if (data.summary) {
 				setActiveSummary({ filename: paper, text: data.summary });
 			} else {
 				alert("Summary failed: " + (data.error || "Unknown error"));
 			}
-		} catch (e) {
-			alert("Error fetching summary");
+		} catch (e: any) {
+			console.error(e);
+			alert("Error fetching summary: " + e.message);
 		} finally {
 			setLoadingSummary(null);
 		}
