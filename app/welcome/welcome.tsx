@@ -1,414 +1,239 @@
 import { useState, useEffect } from "react";
-import papersData from "../papers.json";
-export function Welcome({ message }: { message: string }) {
-	const [activeSummary, setActiveSummary] = useState<{ filename: string; text: string } | null>(null);
-	const [loadingSummary, setLoadingSummary] = useState<string | null>(null);
-	const [timeLeft, setTimeLeft] = useState({
-		days: 0,
-		hours: 0,
-		minutes: 0,
-		seconds: 0,
-	});
+import { 
+  FileText, 
+  Search, 
+  Download, 
+  Eye, 
+  Lightbulb, 
+  X,
+  ChevronRight,
+  BookOpen,
+  ArrowUpRight
+} from "lucide-react";
 
-	// PSLE 2026 Written Papers usually start around Oct 1st
-	const psleDate = new Date("2026-09-20T08:00:00").getTime();
-
-	useEffect(() => {
-		const timer = setInterval(() => {
-			const now = new Date().getTime();
-			const distance = psleDate - now;
-
-			setTimeLeft({
-				days: Math.floor(distance / (1000 * 60 * 60 * 24)),
-				hours: Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
-				minutes: Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
-				seconds: Math.floor((distance % (1000 * 60)) / 1000),
-			});
-		}, 1000);
-
-		return () => clearInterval(timer);
-	}, [psleDate]);
-
-	const handleSummarize = async (paper: string) => {
-		if (loadingSummary) return;
-		setLoadingSummary(paper);
-		try {
-			const res = await fetch(`/api/summarize/${paper}`);
-			if (!res.ok) {
-				const errorText = await res.text();
-				alert(`Server Error (${res.status}): ${errorText.substring(0, 100)}`);
-				return;
-			}
-			const data = await res.json();
-			if (data.summary) {
-				setActiveSummary({ filename: paper, text: data.summary });
-			} else {
-				alert("Summary failed: " + (data.error || "Unknown error"));
-			}
-		} catch (e: any) {
-			console.error(e);
-			alert("Error fetching summary: " + e.message);
-		} finally {
-			setLoadingSummary(null);
-		}
-	};
-
-	return (
-		<main className="min-h-screen premium-bg p-4 md:p-8 font-sans">
-			<div className="max-w-7xl mx-auto space-y-8">
-				{/* Header Section */}
-				<header className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-					<div className="flex items-center gap-4">
-						<img
-							src="/logo.png"
-							alt="Keen PSLE Logo"
-							className="w-16 h-16 md:w-20 md:h-20 rounded-2xl shadow-lg shadow-blue-500/20 object-cover"
-						/>
-						<div>
-							<h1 className="text-4xl md:text-5xl font-bold gradient-text tracking-tight">
-								P6 Excellence Hub @ {new Date().toLocaleDateString()}
-							</h1>
-							<p className="text-slate-500 dark:text-slate-400 mt-2 text-lg">
-								可恩的PSLE成功之路从这里开始。
-								Keen's PSLE success starts here.
-							</p>
-						</div>
-					</div>
-
-					{/* PSLE Countdown Card */}
-					<div className="glass-card p-6 rounded-3xl flex items-center gap-6 animate-in fade-in slide-in-from-top duration-700">
-						<div className="bg-[var(--color-brand-primary)]/10 p-4 rounded-2xl">
-							<svg className="w-8 h-8 text-[var(--color-brand-primary)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-								<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-							</svg>
-						</div>
-						<div>
-							<p className="text-sm font-semibold text-slate-500 uppercase tracking-wider">PSLE Countdown</p>
-							<div className="flex gap-4 mt-1 font-mono text-2xl font-bold">
-								<div className="flex flex-col items-center">
-									<span>{timeLeft.days}</span>
-									<span className="text-[10px] uppercase text-slate-400 font-sans">Days</span>
-								</div>
-								<span className="text-slate-300">:</span>
-								<div className="flex flex-col items-center">
-									<span>{timeLeft.hours}</span>
-									<span className="text-[10px] uppercase text-slate-400 font-sans">Hrs</span>
-								</div>
-								<span className="text-slate-300">:</span>
-								<div className="flex flex-col items-center">
-									<span>{timeLeft.minutes}</span>
-									<span className="text-[10px] uppercase text-slate-400 font-sans">Min</span>
-								</div>
-							</div>
-						</div>
-					</div>
-				</header>
-
-				<div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-					{/* Left Column: Schedule & Subjects */}
-					<div className="lg:col-span-2 space-y-8">
-						{/* Timetable Card */}
-						<section className="glass-card rounded-3xl overflow-hidden">
-							<div className="p-6 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center bg-white/50 dark:bg-slate-900/50">
-								<h2 className="text-xl font-bold flex items-center gap-2">
-									<svg className="w-5 h-5 text-[var(--color-brand-accent)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-										<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-									</svg>
-									Daily Schedule
-								</h2>
-								<span className="px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 text-xs font-bold dark:bg-emerald-900/30 dark:text-emerald-400">
-									Active
-								</span>
-							</div>
-							<div className="p-0 overflow-x-auto">
-								<table className="w-full text-left border-collapse">
-									<thead>
-										<tr className="bg-slate-50/50 dark:bg-slate-800/50">
-											<th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase">Time</th>
-											<th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase">Activity</th>
-										</tr>
-									</thead>
-									<tbody className="divide-y divide-slate-100 dark:divide-slate-800">
-										{timetable.map((item, i) => (
-											<tr key={i} className="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors">
-												<td className="px-6 py-4 font-mono text-sm">{item.time}</td>
-												<td className="px-6 py-4">
-													<div className="flex items-center gap-3">
-														<div className={`w-2 h-2 rounded-full ${item.color}`} />
-														<span className="font-medium">{item.subject}</span>
-													</div>
-												</td>
-											</tr>
-										))}
-									</tbody>
-								</table>
-							</div>
-						</section>
-
-						{/* Course Content Grid */}
-						<section className="space-y-4">
-							<h2 className="text-2xl font-bold px-2">Core Subjects & Papers</h2>
-							<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-								{subjects.map((subject, i) => (
-									<div key={i} className="glass-card p-6 rounded-3xl group flex flex-col h-full">
-										<div className={`w-12 h-12 rounded-2xl ${subject.bgColor} flex items-center justify-center mb-4 group-hover:rotate-6 transition-transform shrink-0`}>
-											{subject.icon}
-										</div>
-										<h3 className="text-lg font-bold mb-2">{subject.title}</h3>
-										<p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed mb-4">
-											{subject.description}
-										</p>
-										
-										{/* Tags
-										<div className="mt-auto flex flex-wrap gap-2 mb-4">
-											{subject.tags.map((tag, j) => (
-												<span key={j} className="text-[10px] px-2 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 font-bold uppercase tracking-tighter">
-													{tag}
-												</span>
-											))}
-										</div>
-										*/}
-
-										<div className="mt-auto pt-4 border-t border-slate-100 dark:border-slate-800">
-											<h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">2025 Practice Papers</h4>
-											<div className="flex flex-col gap-2 max-h-56 overflow-y-auto pr-2 custom-scrollbar">
-												{(papersData as Record<string, string[]>)[subject.title]?.map((paper, j) => {
-													// Parse paper name: "P6_Chinese_2025_SA2_nanyang.pdf" -> "Nanyang"
-													const match = paper.match(/P6_[^_]+_2025_(SA2|WA2)_([^.]+)\.pdf/i);
-													let schoolName = paper;
-													if (match) {
-														schoolName = match[2].charAt(0).toUpperCase() + match[2].slice(1);
-														// Add Higher Chinese indication if applicable
-														if (paper.includes("HChinese")) {
-															schoolName += " (Higher)";
-														}
-													}
-													return (
-														<div key={j} className="flex items-center gap-2 group/link">
-															<a 
-																href={`/api/papers/${paper}`}
-																target="_blank"
-																rel="noopener noreferrer"
-																className="text-sm py-2 px-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 hover:bg-[var(--color-brand-primary)]/10 hover:text-[var(--color-brand-primary)] flex items-center gap-2 transition-colors flex-1 min-w-0"
-															>
-																<svg className="w-4 h-4 shrink-0 text-slate-400 group-hover/link:text-[var(--color-brand-primary)] transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-																	<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
-																</svg>
-																<span className="truncate">{schoolName}</span>
-															</a>
-															<button
-																onClick={() => handleSummarize(paper)}
-																disabled={!!loadingSummary}
-																className={`p-2 rounded-xl transition-all ${loadingSummary === paper ? 'animate-pulse bg-amber-100 text-amber-600' : 'hover:bg-amber-100 hover:text-amber-600 text-slate-400'}`}
-																title="AI Summary"
-															>
-																<svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-																	<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-																</svg>
-															</button>
-														</div>
-													)
-												})}
-											</div>
-										</div>
-									</div>
-								))}
-							</div>
-						</section>
-					</div>
-
-					{/* Right Column: Calendar & Quick Links */}
-					<div className="space-y-8">
-						{/* Monthly Calendar View */}
-						<section className="glass-card p-6 rounded-3xl">
-							<div className="flex items-center justify-between mb-6">
-								<h2 className="font-bold">September 2026</h2>
-								<div className="flex gap-2">
-									<button className="p-1 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg">
-										<svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
-									</button>
-									<button className="p-1 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg">
-										<svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
-									</button>
-								</div>
-							</div>
-							<div className="grid grid-cols-7 gap-2 text-center text-[10px] font-bold text-slate-400 mb-4">
-								<span>SUN</span><span>MON</span><span>TUE</span><span>WED</span><span>THU</span><span>FRI</span><span>SAT</span>
-							</div>
-							<div className="grid grid-cols-7 gap-1">
-								{/* Sept 1 2026 is a Tuesday, so add 2 empty cells for SUN and MON */}
-								{Array.from({ length: 2 }).map((_, i) => (
-									<div key={`empty-${i}`} className="aspect-square" />
-								))}
-								{Array.from({ length: 30 }).map((_, i) => {
-									const day = i + 1;
-									const isToday = false;
-									const hasEvent = [24, 25, 28, 29].includes(day);
-									return (
-										<div
-											key={i}
-											className={`aspect-square flex items-center justify-center rounded-xl text-sm cursor-pointer transition-all
-												${isToday ? 'bg-[var(--color-brand-primary)] text-white font-bold shadow-lg shadow-blue-500/30 ring-2 ring-white/50' : 'hover:bg-slate-100 dark:hover:bg-slate-800'}
-												${hasEvent ? 'bg-[var(--color-brand-accent)]/20 border-b-2 border-[var(--color-brand-accent)] font-bold text-[var(--color-brand-primary)]' : ''}
-											`}
-											title={day === 24 ? "English" : day === 25 ? "Mathematics" : day === 28 ? "Chinese" : day === 29 ? "Science" : ""}
-										>
-											{day}
-										</div>
-									);
-								})}
-							</div>
-							<div className="mt-6 space-y-3">
-								<p className="text-xs font-bold text-slate-400 uppercase">Exam Schedule</p>
-
-								<div className="flex gap-3 items-center p-3 rounded-2xl bg-purple-100/50 dark:bg-purple-950/30 border border-purple-200/50 dark:border-purple-900/50">
-									<div className="w-2 h-2 rounded-full bg-purple-500" />
-									<div className="text-xs">
-										<p className="font-bold text-purple-700 dark:text-purple-400">English Language</p>
-										<p className="text-purple-600/70 dark:text-purple-400/50">September 24</p>
-									</div>
-								</div>
-
-								<div className="flex gap-3 items-center p-3 rounded-2xl bg-indigo-100/50 dark:bg-indigo-950/30 border border-indigo-200/50 dark:border-indigo-900/50">
-									<div className="w-2 h-2 rounded-full bg-indigo-500" />
-									<div className="text-xs">
-										<p className="font-bold text-indigo-700 dark:text-indigo-400">Mathematics</p>
-										<p className="text-indigo-600/70 dark:text-indigo-400/50">September 25</p>
-									</div>
-								</div>
-
-								<div className="flex gap-3 items-center p-3 rounded-2xl bg-pink-100/50 dark:bg-pink-950/30 border border-pink-200/50 dark:border-pink-900/50">
-									<div className="w-2 h-2 rounded-full bg-pink-500" />
-									<div className="text-xs">
-										<p className="font-bold text-pink-700 dark:text-pink-400">Chinese (Mother Tongue)</p>
-										<p className="text-pink-600/70 dark:text-pink-400/50">September 28</p>
-									</div>
-								</div>
-
-								<div className="flex gap-3 items-center p-3 rounded-2xl bg-emerald-100/50 dark:bg-emerald-950/30 border border-emerald-200/50 dark:border-emerald-900/50">
-									<div className="w-2 h-2 rounded-full bg-emerald-500" />
-									<div className="text-xs">
-										<p className="font-bold text-emerald-700 dark:text-emerald-400">Science</p>
-										<p className="text-emerald-600/70 dark:text-emerald-400/50">September 29</p>
-									</div>
-								</div>
-							</div>
-						</section>
-
-						{/* Study Resources */}
-						<section className="glass-card p-6 rounded-3xl bg-gradient-to-br from-indigo-500 to-purple-600 text-white border-none">
-							<h2 className="text-xl font-bold mb-2">Practice Papers</h2>
-							<p className="text-indigo-100 text-sm mb-6">Access the latest top-school papers and past year series.</p>
-							<button className="w-full bg-white text-indigo-600 font-bold py-3 rounded-2xl hover:bg-indigo-50 transition-colors shadow-lg">
-								Browse Repository
-							</button>
-						</section>
-					</div>
-				</div>
-
-				<footer className="text-center py-12 text-slate-400 text-sm">
-					<p>© 2026 P6 Learning Excellence Platform. All rights reserved.</p>
-					<p className="mt-1">Dedicated to the Singapore Primary 6 Class of 2026.</p>
-				</footer>
-				{/* AI Summary Modal */}
-				{activeSummary && (
-					<div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm animate-in fade-in duration-300">
-						<div className="glass-card w-full max-w-2xl max-h-[80vh] overflow-hidden flex flex-col rounded-3xl shadow-2xl animate-in zoom-in-95 duration-300">
-							<div className="p-6 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center bg-white/80 dark:bg-slate-900/80">
-								<div className="flex items-center gap-3">
-									<div className="w-10 h-10 rounded-xl bg-amber-100 flex items-center justify-center text-amber-600">
-										<svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-											<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-										</svg>
-									</div>
-									<div>
-										<h3 className="font-bold text-lg">AI Knowledge Insight</h3>
-										<p className="text-xs text-slate-500 truncate max-w-[300px]">{activeSummary.filename}</p>
-									</div>
-								</div>
-								<button 
-									onClick={() => setActiveSummary(null)}
-									className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors"
-								>
-									<svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-										<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-									</svg>
-								</button>
-							</div>
-							<div className="p-8 overflow-y-auto custom-scrollbar prose dark:prose-invert prose-sm max-w-none">
-								<div className="whitespace-pre-wrap text-slate-700 dark:text-slate-300 leading-relaxed text-base">
-									{activeSummary.text}
-								</div>
-							</div>
-							<div className="p-6 bg-slate-50/50 dark:bg-slate-800/50 border-t border-slate-100 dark:border-slate-800 flex justify-end">
-								<button 
-									onClick={() => setActiveSummary(null)}
-									className="px-6 py-2 bg-[var(--color-brand-primary)] text-white font-bold rounded-xl shadow-lg shadow-blue-500/20 hover:opacity-90 transition-opacity"
-								>
-									Got it, thanks!
-								</button>
-							</div>
-						</div>
-					</div>
-				)}
-			</div>
-		</main>
-	);
+interface ExamPaper {
+  id: string;
+  name: string;
+  year: number;
+  subject: string;
+  level: string;
+  school: string;
+  filename: string;
 }
 
-const timetable = [
-	{ time: "07:30 - 08:00", subject: "Assembly & Character Dev", color: "bg-blue-400" },
-	{ time: "08:00 - 09:30", subject: "Mathematics (Geometry)", color: "bg-indigo-500" },
-	{ time: "09:30 - 10:00", subject: "Recess Break", color: "bg-orange-400" },
-	{ time: "10:00 - 11:30", subject: "Science (Forces & Energy)", color: "bg-emerald-500" },
-	{ time: "11:30 - 13:00", subject: "English Language (Synthesis)", color: "bg-purple-500" },
-	{ time: "13:00 - 14:00", subject: "Mother Tongue", color: "bg-pink-500" },
-	{ time: "14:00 - 15:30", subject: "CCA / Remedial Sessions", color: "bg-slate-400" },
-];
+export function Welcome() {
+  const [papers, setPapers] = useState<ExamPaper[]>([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [loading, setLoading] = useState(true);
+  
+  // AI Summary State
+  const [summarizingId, setSummarizingId] = useState<string | null>(null);
+  const [summary, setSummary] = useState<string | null>(null);
+  const [showSummary, setShowSummary] = useState(false);
 
-const subjects = [
-	{
-		title: "Mathematics",
-		description: "Mastering Algebra, Fractions, Ratio, Percentage, and complex Word Problems.",
-		icon: (
-			<svg className="w-6 h-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-				<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
-			</svg>
-		),
-		bgColor: "bg-indigo-100",
-		tags: ["Numbers", "Operations", "Shape & Measurement"],
-	},
-	{
-		title: "Science",
-		description: "Exploring Life Sciences (Diversity, Cycles) and Physical Sciences (Systems, Interactions, Energy).",
-		icon: (
-			<svg className="w-6 h-6 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-				<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.628.283a2 2 0 01-1.186.12l-2.731-.455a2 2 0 00-1.981 1.058l-.428.856a2 2 0 01-1.625 1.013H4a2 2 0 00-2 2v1a2 2 0 002 2h16a2 2 0 002-2v-1.113a2 2 0 00-1.572-1.956l-1.000-.200z" />
-			</svg>
-		),
-		bgColor: "bg-emerald-100",
-		tags: ["Matter", "Energy", "Systems"],
-	},
-	{
-		title: "English",
-		description: "Focus on Situational Writing, Continuous Writing, Comprehension, and Oral Communication.",
-		icon: (
-			<svg className="w-6 h-6 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-				<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-			</svg>
-		),
-		bgColor: "bg-purple-100",
-		tags: ["Grammar", "Vocab", "Writing"],
-	},
-	{
-		title: "Mother Tongue",
-		description: "Enhancing listening, speaking, reading, and writing skills in the respective mother tongue.",
-		icon: (
-			<svg className="w-6 h-6 text-pink-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-				<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
-			</svg>
-		),
-		bgColor: "bg-pink-100",
-		tags: ["Oral", "Composition", "Culture"],
-	},
-];
+  useEffect(() => {
+    fetch("/api/papers")
+      .then(res => res.json())
+      .then(data => {
+        setPapers(data);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error("Failed to fetch papers", err);
+        setLoading(false);
+      });
+  }, []);
+
+  const handleSummarize = async (filename: string) => {
+    setSummarizingId(filename);
+    try {
+      const res = await fetch(`/api/summarize/${filename}`);
+      const data = await res.json();
+      if (data.summary) {
+        setSummary(data.summary);
+        setShowSummary(true);
+      } else if (data.error) {
+        alert("Error: " + data.error);
+      }
+    } catch (err) {
+      alert("Failed to reach AI service");
+    } finally {
+      setSummarizingId(null);
+    }
+  };
+
+  const filteredPapers = papers.filter(paper => 
+    paper.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    paper.subject.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    paper.school.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  return (
+    <main className="min-h-screen bg-[#ffffff]">
+      {/* Navigation - Clean Pinterest Style */}
+      <nav className="sticky top-0 z-40 bg-white/90 backdrop-blur-md px-6 py-4 flex items-center justify-between border-b border-[#e5e5e0]">
+        <div className="flex items-center gap-2">
+          <div className="w-8 h-8 bg-[#e60023] rounded-full flex items-center justify-center text-white font-bold">K</div>
+          <span className="text-xl font-bold tracking-tight text-[#211922]">Keen PSLE</span>
+        </div>
+        
+        <div className="flex-1 max-w-2xl mx-8 relative">
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-[#62625b] w-4 h-4" />
+          <input 
+            type="text"
+            placeholder="搜索科目、学校或年份..."
+            className="w-full pl-11 pr-4 py-3 bg-[#e5e5e0] rounded-full border-none focus:ring-2 focus:ring-[#435ee5] text-[#211922] placeholder-[#62625b]"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
+
+        <div className="flex items-center gap-4">
+          <button className="btn-red text-white text-sm">注册</button>
+          <button className="btn-sand text-sm">登录</button>
+        </div>
+      </nav>
+
+      <div className="max-w-[1400px] mx-auto px-6 py-12">
+        {/* Hero Section */}
+        <header className="mb-16">
+          <h1 className="text-[70px] font-semibold leading-tight text-[#211922] mb-4">
+            给未来的灵感
+          </h1>
+          <p className="text-xl text-[#62625b] max-w-2xl">
+            在这里发现最全的 PSLE 复习资源。点击 <Lightbulb className="inline w-5 h-5 text-[#e60023]" /> 开启 AI 深度知识点总结。
+          </p>
+        </header>
+
+        {/* Masonry-like Grid */}
+        <section>
+          {loading ? (
+            <div className="flex justify-center py-20">
+              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#e60023]"></div>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+              {filteredPapers.map((paper) => (
+                <div key={paper.id} className="pin-card group">
+                  {/* Visual Preview Placeholder */}
+                  <div className="aspect-[3/4] bg-[#f6f6f3] relative flex items-center justify-center p-8 group-hover:brightness-95 transition-all">
+                    <FileText className="w-16 h-16 text-[#bcbcb3]" />
+                    <div className="absolute top-4 left-4">
+                      <span className="px-3 py-1 bg-white/80 backdrop-blur-sm text-[10px] font-bold rounded-full text-[#211922]">
+                        {paper.year}
+                      </span>
+                    </div>
+                    {/* Hover Overlay Actions */}
+                    <div className="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-3">
+                      <button 
+                        onClick={() => handleSummarize(paper.filename)}
+                        disabled={summarizingId === paper.filename}
+                        className="btn-red flex items-center gap-2 transform translate-y-2 group-hover:translate-y-0 transition-transform"
+                      >
+                        {summarizingId === paper.filename ? (
+                          <span className="animate-pulse">识别中...</span>
+                        ) : (
+                          <><Lightbulb className="w-4 h-4" /> AI 总结</>
+                        )}
+                      </button>
+                    </div>
+                  </div>
+                  
+                  {/* Content Info */}
+                  <div className="p-4">
+                    <h3 className="font-bold text-[#211922] line-clamp-1 mb-1">{paper.name}</h3>
+                    <div className="flex items-center justify-between text-[12px] text-[#62625b]">
+                      <span>{paper.subject} · {paper.school}</span>
+                      <a 
+                        href={`/api/papers/${paper.filename}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="hover:text-[#e60023]"
+                      >
+                        <ArrowUpRight className="w-4 h-4" />
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </section>
+      </div>
+
+      {/* Pinterest Style Summary Modal */}
+      {showSummary && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setShowSummary(false)}></div>
+          <div className="relative bg-white w-full max-w-4xl max-h-[85vh] rounded-[32px] shadow-2xl flex flex-col overflow-hidden">
+            <div className="flex items-center justify-between p-6 border-b border-[#e5e5e0]">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-[#e60023] rounded-full flex items-center justify-center text-white">
+                  <Lightbulb className="w-6 h-6" />
+                </div>
+                <h2 className="text-2xl font-bold text-[#211922]">AI 知识点透视</h2>
+              </div>
+              <button 
+                onClick={() => setShowSummary(false)}
+                className="btn-circle"
+              >
+                <X className="w-6 h-6" />
+              </button>
+            </div>
+            
+            <div className="flex-1 overflow-y-auto p-8 custom-scrollbar bg-[#f6f6f3]/50">
+              <div className="prose prose-slate max-w-none">
+                <div className="bg-white p-8 rounded-[24px] shadow-sm border border-[#e5e5e0]">
+                  {summary?.split("\n").map((line, i) => (
+                    <p key={i} className="mb-4 text-[#211922] leading-relaxed text-lg">
+                      {line}
+                    </p>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div className="p-6 bg-white border-t border-[#e5e5e0] flex justify-end gap-3">
+              <button className="btn-sand" onClick={() => setShowSummary(false)}>关闭</button>
+              <button className="btn-red">收藏此总结</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Footer - Dark Pinterest Style */}
+      <footer className="bg-[#33332e] text-white py-16 px-6 mt-20">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
+          <div className="col-span-2">
+            <div className="flex items-center gap-2 mb-6">
+              <div className="w-8 h-8 bg-[#e60023] rounded-full flex items-center justify-center text-white font-bold">K</div>
+              <span className="text-xl font-bold tracking-tight">Keen PSLE</span>
+            </div>
+            <p className="text-[#91918c] max-w-sm">
+              专为新加坡学生打造的 PSLE 智能复习平台。利用 AI 技术发掘知识背后的关联，让学习变得像刷 Pinterest 一样轻松有趣。
+            </p>
+          </div>
+          <div>
+            <h4 className="font-bold mb-6">资源</h4>
+            <ul className="space-y-3 text-[#91918c] text-sm">
+              <li><a href="#" className="hover:text-white">数学真题</a></li>
+              <li><a href="#" className="hover:text-white">科学实验总结</a></li>
+              <li><a href="#" className="hover:text-white">华文好词好句</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 className="font-bold mb-6">关于</h4>
+            <ul className="space-y-3 text-[#91918c] text-sm">
+              <li><a href="#" className="hover:text-white">关于我们</a></li>
+              <li><a href="#" className="hover:text-white">加入社群</a></li>
+              <li><a href="#" className="hover:text-white">隐私协议</a></li>
+            </ul>
+          </div>
+        </div>
+        <div className="max-w-6xl mx-auto mt-16 pt-8 border-t border-white/10 text-center text-[#91918c] text-xs">
+          © 2026 Keen PSLE. 灵感驱动学习。
+        </div>
+      </footer>
+    </main>
+  );
+}

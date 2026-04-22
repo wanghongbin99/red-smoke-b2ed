@@ -1,45 +1,95 @@
 @import "tailwindcss" source(".");
 
 @theme {
-	--font-sans:
-		"Outfit", "Inter", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
-		"Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-    
-    --color-brand-primary: hsl(230, 85%, 60%);
-    --color-brand-secondary: hsl(280, 80%, 65%);
-    --color-brand-accent: hsl(190, 90%, 50%);
+  /* Pinterest Brand Colors */
+  --color-brand-red: #e60023;
+  --color-text-plum: #211922;
+  --color-text-olive: #62625b;
+  --color-text-silver: #91918c;
+  
+  /* Surfaces */
+  --color-surface-sand: #e5e5e0;
+  --color-surface-warm-light: #e0e0d9;
+  --color-surface-wash: hsla(60, 20%, 98%, 0.5);
+  --color-surface-fog: #f6f6f3;
+  --color-surface-dark: #33332e;
+  
+  /* Radii */
+  --radius-pinterest: 16px;
+  --radius-card: 20px;
+  --radius-hero: 40px;
+  
+  /* Typography Fallbacks */
+  --font-pin: "Outfit", -apple-system, system-ui, Segoe UI, Roboto, sans-serif;
 }
 
-html,
-body {
-	@apply bg-slate-50 text-slate-900 transition-colors duration-300 dark:bg-slate-950 dark:text-slate-100;
-	min-height: 100vh;
-    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+@layer base {
+  html, body {
+    @apply bg-white text-[var(--color-text-plum)] font-[var(--font-pin)];
+    min-height: 100vh;
+  }
 }
 
-.glass-card {
-    @apply bg-white/70 backdrop-blur-xl border border-white/20 shadow-xl dark:bg-slate-900/70 dark:border-slate-800/50;
+/* Pinterest Masonry Grid */
+.pin-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  grid-auto-rows: 10px;
+  gap: 16px;
 }
 
-.gradient-text {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-[var(--color-brand-primary)] to-[var(--color-brand-secondary)];
+/* Pinterest Pin Card Style */
+.pin-card {
+  @apply bg-white overflow-hidden transition-all duration-300;
+  border-radius: var(--radius-card);
+  border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
-.premium-bg {
-    background-image: 
-        radial-gradient(at 0% 0%, hsla(230, 85%, 60%, 0.15) 0px, transparent 50%),
-        radial-gradient(at 100% 0%, hsla(280, 80%, 65%, 0.15) 0px, transparent 50%),
-        radial-gradient(at 100% 100%, hsla(190, 90%, 50%, 0.1) 0px, transparent 50%),
-        radial-gradient(at 0% 100%, hsla(230, 85%, 60%, 0.1) 0px, transparent 50%);
+.pin-card:hover {
+  @apply transform scale-[1.02];
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
 }
 
-/* Custom Scrollbar for PDF Lists */
+/* Warm Secondary Button */
+.btn-sand {
+  @apply px-4 py-2 bg-[var(--color-surface-sand)] text-black font-semibold transition-colors duration-200;
+  border-radius: var(--radius-pinterest);
+}
+
+.btn-sand:hover {
+  @apply bg-[#bcbcb3];
+}
+
+/* Primary Red Button */
+.btn-red {
+  @apply px-4 py-2 bg-[var(--color-brand-red)] text-white font-semibold transition-all duration-200;
+  border-radius: var(--radius-pinterest);
+}
+
+.btn-red:hover {
+  @apply brightness-90;
+}
+
+/* Circular Button */
+.btn-circle {
+  @apply flex items-center justify-center bg-[var(--color-surface-warm-light)] text-[var(--color-text-plum)] transition-all;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+}
+
+.btn-circle:hover {
+  @apply bg-[var(--color-surface-sand)];
+}
+
+/* Custom Pinterest Scrollbar */
 .custom-scrollbar::-webkit-scrollbar {
-    width: 6px;
+  width: 8px;
 }
 .custom-scrollbar::-webkit-scrollbar-track {
-    background: transparent;
+  background: var(--color-surface-fog);
 }
 .custom-scrollbar::-webkit-scrollbar-thumb {
-    @apply bg-slate-300/50 rounded-full dark:bg-slate-700/50 hover:bg-slate-400 dark:hover:bg-slate-600;
+  background: var(--color-text-silver);
+  border-radius: 10px;
 }
