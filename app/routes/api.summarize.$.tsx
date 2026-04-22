@@ -37,8 +37,8 @@ export async function loader({ params, context }: Route.LoaderArgs) {
     const extractText = (res: any) => res?.response || res?.result || res?.content || res?.answer || "";
 
     if (markdownContent && markdownContent.trim().length > 100) {
-      // 路径 A: 文字版试卷 - 使用 Gemma 4
-      console.log("Path A: Text summary");
+      // 路径 A: 文字版试卷 - 使用 Gemma 4 (Google 模型，无授权限制)
+      console.log("Path A: Text summary with Gemma 4");
       const res = await ai.run("@cf/google/gemma-4-26b-a4b-it", {
         messages: [
           { role: "system", content: "You are an expert PSLE educator. Summarize the exam content in Chinese." },
@@ -47,13 +47,13 @@ export async function loader({ params, context }: Route.LoaderArgs) {
       });
       summary = extractText(res);
     } else {
-      // 路径 B: 扫描件试卷 - 使用 Llama 3.2 Vision (更擅长 OCR)
-      console.log("Path B: OCR with Llama 3.2 Vision");
+      // 路径 B: 扫描件试卷 - 使用 Qwen 2.5 VL (阿里视觉模型，OCR 极强，无 Llama 那样的授权限制)
+      console.log("Path B: OCR with Qwen 2.5 VL");
       const limitedBuffer = fullBuffer.byteLength > 3 * 1024 * 1024 
         ? fullBuffer.slice(0, 3 * 1024 * 1024) 
         : fullBuffer;
 
-      const res = await ai.run("@cf/meta/llama-3.2-11b-vision-instruct", {
+      const res = await ai.run("@cf/qwen/qwen2-vl-7b-instruct", {
         prompt: "这是一个新加坡 PSLE 试卷扫描件。请分析试卷内容并总结：核心知识点、难度、复习建议。请用中文回答。",
         image: Array.from(new Uint8Array(limitedBuffer))
       });
@@ -61,7 +61,7 @@ export async function loader({ params, context }: Route.LoaderArgs) {
     }
 
     if (!summary) {
-      return new Response(JSON.stringify({ error: "AI returned empty response. Check Cloudflare Logs." }), { status: 500 });
+      return new Response(JSON.stringify({ error: "AI returned empty response." }), { status: 500 });
     }
 
     return Response.json({ summary });
