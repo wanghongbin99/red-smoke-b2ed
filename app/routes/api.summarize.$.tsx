@@ -28,15 +28,16 @@ export async function loader({ params, context }: Route.LoaderArgs) {
       {
         name: filename,
         blob: new Blob([await object.arrayBuffer()], {
-          type: "application/octet-stream",
+          type: "application/pdf",
         }),
       },
     ]);
 
+    console.log("Conversion Result:", JSON.stringify(conversionResult));
     const markdownContent = conversionResult[0]?.content || "";
 
     if (!markdownContent) {
-      return new Response("Could not extract content from PDF", { status: 500 });
+      return new Response(`Could not extract content from PDF. Conversion result: ${JSON.stringify(conversionResult)}`, { status: 500 });
     }
 
     // 2. Summarize using Llama 3
