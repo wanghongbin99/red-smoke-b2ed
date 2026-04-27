@@ -1,4 +1,4 @@
-import { Agent, Connection } from "agents";
+import { Agent } from "agents";
 
 interface Env {
   AI: any;
@@ -49,7 +49,7 @@ export class PSLEAgent extends Agent<Env, State> {
     });
   }
 
-  async onMessage(connection: Connection, message: string) {
+  async onMessage(connection: any, message: string) {
     const data = JSON.parse(message);
 
     if (data.type === "search_and_store") {
