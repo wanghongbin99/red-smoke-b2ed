@@ -102,14 +102,20 @@ export class PSLEAgent extends Agent<Env, State> {
         this.addLog("已获取网络信息，正在使用 PSLE SKILL 进行 AI 分析...");
 
         // 2. 利用 AI 和 PSLE SKILL 进行提炼
-        const aiResponse = await this.env.AI.run("@cf/google/gemma-4-26b-a4b-it", {
+        const aiResponse = await this.env.AI.run("@cf/meta/llama-3.1-8b-instruct", {
           messages: [
             { role: "system", content: PSLE_SKILL_PROMPT },
             { role: "user", content: `请分析以下搜索结果，提炼出核心知识点：\n${searchResults}` }
           ]
         });
 
-        const refinedContent = aiResponse.response;
+        // 兼容不同模型的返回格式
+        const refinedContent = aiResponse.response || aiResponse.result || (typeof aiResponse === 'string' ? aiResponse : JSON.stringify(aiResponse));
+        
+        if (!refinedContent || refinedContent === 'null' || refinedContent === '{}') {
+          throw new Error("AI 提炼失败，返回了空内容: " + JSON.stringify(aiResponse));
+        }
+
         this.addLog("AI 提炼完成，正在存入数据库...");
 
         // 3. 将数据存入 SQLite 数据库
