@@ -30,7 +30,7 @@
 		{
 			"binding": "DB",
 			"database_name": "keen_psle_db",
-			"database_id": "keen-psle-local-db"
+			"database_id": "6a4ac9b2-d55e-453b-9d63-96218219ce82"
 		}
 	],
 	"durable_objects": {

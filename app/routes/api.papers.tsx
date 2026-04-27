@@ -6,10 +6,19 @@ export async function loader({ context }: Route.LoaderArgs) {
     return Response.json({ error: "Bucket not found" }, { status: 500 });
   }
 
-  const objects = await bucket.list();
+  let allObjects: any[] = [];
+  let truncated = true;
+  let cursor: string | undefined;
+
+  while (truncated) {
+    const listResult = await bucket.list({ cursor });
+    allObjects.push(...listResult.objects);
+    truncated = listResult.truncated;
+    cursor = listResult.truncated ? listResult.cursor : undefined;
+  }
   
   // 简单的解析逻辑：从文件名推断年份、科目、学校
-  const papers = objects.objects.map(obj => {
+  const papers = allObjects.map(obj => {
     const filename = obj.key;
     // 假设文件名格式如: P6_Math_2024_ACS.pdf
     const parts = filename.replace(".pdf", "").split("_");
