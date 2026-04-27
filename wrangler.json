@@ -25,7 +25,23 @@
 	],
 	"ai": {
 		"binding": "AI"
-	}
+	},
+	"durable_objects": {
+		"bindings": [
+			{
+				"name": "PSLEAgent",
+				"class_name": "PSLEAgent"
+			}
+		]
+	},
+	"migrations": [
+		{
+			"tag": "v1",
+			"new_sqlite_classes": [
+				"PSLEAgent"
+			]
+		}
+	]
 	/**
 	 * Smart Placement
 	 * https://developers.cloudflare.com/workers/configuration/smart-placement/#smart-placement

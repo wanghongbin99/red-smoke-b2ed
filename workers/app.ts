@@ -14,10 +14,18 @@ const requestHandler = createRequestHandler(
 	import.meta.env.MODE,
 );
 
+import { routeAgentRequest } from "agents";
+import { PSLEAgent } from "../app/agents/PSLEAgent.ts";
+
 export default {
-	fetch(request, env, ctx) {
+	async fetch(request, env, ctx) {
+		const agentResponse = await routeAgentRequest(request, env);
+		if (agentResponse) return agentResponse;
+
 		return requestHandler(request, {
 			cloudflare: { env, ctx },
 		});
 	},
 } satisfies ExportedHandler<Env>;
+
+export { PSLEAgent };

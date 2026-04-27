@@ -1,10 +1,9 @@
-import { json } from "react-router";
 import type { Route } from "./+types/api.papers";
 
 export async function loader({ context }: Route.LoaderArgs) {
   const bucket = context.cloudflare.env.BUCKET;
   if (!bucket) {
-    return json({ error: "Bucket not found" }, { status: 500 });
+    return Response.json({ error: "Bucket not found" }, { status: 500 });
   }
 
   const objects = await bucket.list();
@@ -26,5 +25,5 @@ export async function loader({ context }: Route.LoaderArgs) {
     };
   });
 
-  return json(papers);
+  return Response.json(papers);
 }
