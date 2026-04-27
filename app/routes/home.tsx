@@ -1,5 +1,6 @@
 import type { Route } from "./+types/home";
 import { Welcome } from "../welcome/welcome";
+import { getUser } from "../utils/auth.server";
 
 export function meta({ }: Route.MetaArgs) {
 	return [
@@ -8,10 +9,19 @@ export function meta({ }: Route.MetaArgs) {
 	];
 }
 
-export function loader({ context }: Route.LoaderArgs) {
-	return { message: context.cloudflare.env.VALUE_FROM_CLOUDFLARE };
+export async function loader({ request, context }: Route.LoaderArgs) {
+	const db = context.cloudflare.env.DB;
+	let user = null;
+	if (db) {
+		user = await getUser(request, db);
+	}
+
+	return { 
+		message: context.cloudflare.env.VALUE_FROM_CLOUDFLARE,
+		user
+	};
 }
 
 export default function Home({ loaderData }: Route.ComponentProps) {
-	return <Welcome message={loaderData.message} />;
+	return <Welcome message={loaderData.message} user={loaderData.user} />;
 }

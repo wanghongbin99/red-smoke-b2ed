@@ -26,6 +26,13 @@
 	"ai": {
 		"binding": "AI"
 	},
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "keen_psle_db",
+			"database_id": "keen-psle-local-db"
+		}
+	],
 	"durable_objects": {
 		"bindings": [
 			{

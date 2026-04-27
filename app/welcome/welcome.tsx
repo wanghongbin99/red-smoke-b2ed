@@ -21,7 +21,7 @@ interface ExamPaper {
   filename: string;
 }
 
-export function Welcome() {
+export function Welcome({ message, user }: { message?: string, user?: { id: number, email: string } | null }) {
   const [papers, setPapers] = useState<ExamPaper[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
@@ -89,8 +89,19 @@ export function Welcome() {
         </div>
 
         <div className="flex items-center gap-4">
-          <button className="btn-red text-white text-sm">注册</button>
-          <button className="btn-sand text-sm">登录</button>
+          {user ? (
+            <>
+              <span className="text-sm text-[#62625b]">{user.email}</span>
+              <form action="/logout" method="post">
+                <button type="submit" className="btn-sand text-sm">退出</button>
+              </form>
+            </>
+          ) : (
+            <>
+              <a href="/register" className="btn-red text-white text-sm">注册</a>
+              <a href="/login" className="btn-sand text-sm">登录</a>
+            </>
+          )}
         </div>
       </nav>
 
