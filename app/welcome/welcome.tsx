@@ -90,12 +90,17 @@ export function Welcome({ message, user }: { message?: string, user?: { id: numb
 
         <div className="flex items-center gap-4">
           {user ? (
-            <>
-              <span className="text-sm text-[#62625b]">{user.email}</span>
+            <div className="flex items-center gap-4">
+              <span className="text-gray-600 font-medium hidden sm:inline-block">欢迎, {user.email}</span>
+              <a href="/agent" className="px-4 py-2 bg-black text-white font-bold rounded-full hover:bg-gray-800 transition-colors shadow-sm">
+                ✨ 咨询 AI 专家
+              </a>
               <form action="/logout" method="post">
-                <button type="submit" className="btn-sand text-sm">退出</button>
+                <button type="submit" className="px-4 py-2 bg-gray-200 text-gray-800 font-bold rounded-full hover:bg-gray-300 transition-colors">
+                  登出
+                </button>
               </form>
-            </>
+            </div>
           ) : (
             <>
               <a href="/register" className="btn-red text-white text-sm">注册</a>

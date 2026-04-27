@@ -1,5 +1,12 @@
 import { Agent } from "agents";
 
+// 导入所有的 PSLE Skills
+import mainSkill from "./skills/SKILL.md?raw";
+import mathSkill from "./skills/references/PSLE_MATH_SKILL.md?raw";
+import scienceSkill from "./skills/references/PSLE_SCIENCE_SKILL.md?raw";
+import englishSkill from "./skills/references/PSLE_ENGLISH_SKILL.md?raw";
+import chineseSkill from "./skills/references/PSLE_CHINESE_SKILL.md?raw";
+
 interface Env {
   AI: any;
   MCP_WEB_SEARCH_URL?: string; // Optional: URL to your MCP search server
@@ -10,14 +17,31 @@ interface State {
   logs: string[];
 }
 
-// PSLE Skill Context (You can move this to a SKILL.md file if preferred)
+// 整合所有的 PSLE Skill 作为一个完整的专家系统 Prompt
 const PSLE_SKILL_PROMPT = `
 你是一个 PSLE (新加坡小学离校考试) 专家 AI Agent。
 你的任务是：
-1. 接收用户的搜索关键词（如 "PSLE Math 2025 Syllabus"）。
-2. 调用外部的 MCP 搜索服务获取最新的网络信息。
-3. 对收集到的资料进行提炼总结。
-4. 将有价值的知识点存入 SQLite 数据库。
+1. 接收用户的搜索关键词或问题。
+2. 对收集到的资料或问题进行提炼总结，严格遵循以下提供的各种学科 SKILL 规范。
+3. 将有价值的知识点或分析存入 SQLite 数据库。
+
+下面是你必须遵守的 PSLE 核心能力规范与各学科详细解题标准：
+
+### 核心指导原则 (Main Skill)
+${mainSkill}
+
+### 各学科具体标准
+--- MATH SKILL ---
+${mathSkill}
+
+--- SCIENCE SKILL ---
+${scienceSkill}
+
+--- ENGLISH SKILL ---
+${englishSkill}
+
+--- CHINESE SKILL ---
+${chineseSkill}
 `;
 
 export class PSLEAgent extends Agent<Env, State> {
