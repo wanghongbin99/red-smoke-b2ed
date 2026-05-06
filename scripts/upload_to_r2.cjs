@@ -42,8 +42,9 @@ function uploadNext() {
     
     console.log(`[${idx + 1}/${allFiles.length}] Uploading ${relativePath}...`);
     
-    // Command: npx wrangler r2 object put BUCKET_NAME/key --file=fullPath
-    const cmd = `npx wrangler r2 object put ${BUCKET_NAME}/"${relativePath}" --file="${fullPath}"`;
+    // Command: npx wrangler r2 object put BUCKET_NAME/key --file=fullPath --remote
+    const cmd = `npx wrangler r2 object put ${BUCKET_NAME}/"${relativePath}" --file="${fullPath}" --remote`;
+
     
     exec(cmd, (error, stdout, stderr) => {
         if (error) {

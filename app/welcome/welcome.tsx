@@ -68,13 +68,15 @@ export function Welcome({ message, user }: { message?: string, user?: { id: numb
     paper.school.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // Group papers by subject
-  const papersBySubject = filteredPapers.reduce((acc, paper) => {
+  // Group papers by Year -> Subject -> Files
+  const papersIndex = filteredPapers.reduce((acc, paper) => {
+    const year = paper.year.toString();
     const subject = paper.subject.toUpperCase();
-    if (!acc[subject]) acc[subject] = [];
-    acc[subject].push(paper);
+    if (!acc[year]) acc[year] = {};
+    if (!acc[year][subject]) acc[year][subject] = [];
+    acc[year][subject].push({ name: paper.name, filename: paper.filename });
     return acc;
-  }, {} as Record<string, ExamPaper[]>);
+  }, {} as Record<string, Record<string, {name: string, filename: string}[]>>);
 
   return (
     <main className="min-h-screen bg-[#ffffff]">
@@ -120,79 +122,77 @@ export function Welcome({ message, user }: { message?: string, user?: { id: numb
 
       <div className="max-w-[1400px] mx-auto px-6 py-12">
         {/* Hero Section */}
-        <header className="mb-16">
-
+        <header className="mb-12">
           <p className="text-xl text-[#62625b] max-w-2xl">
             在这里发现最全的 PSLE 复习资源。点击 <Lightbulb className="inline w-5 h-5 text-[#e60023]" /> 开启 AI 深度知识点总结。
           </p>
         </header>
 
-        {/* Masonry-like Grid */}
-        <section>
+        {/* 试卷库浏览区 */}
+        <section className="bg-white rounded-3xl shadow-sm p-8 border border-gray-200">
+          <div className="mb-8">
+            <h2 className="text-3xl font-bold text-gray-900">历年 PSLE 试卷库</h2>
+            <p className="text-gray-500 mt-2">浏览并下载自动归档的各科试卷 (2016 - 2024)</p>
+          </div>
+          
           {loading ? (
-            <div className="flex justify-center py-20">
-              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#e60023]"></div>
+            <div className="text-center py-12 text-gray-400 flex flex-col items-center">
+              <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-[#e60023] mb-4"></div>
+              正在加载试卷目录...
             </div>
-          ) : Object.keys(papersBySubject).length === 0 ? (
+          ) : Object.keys(papersIndex).length === 0 ? (
             <div className="flex justify-center py-20 text-[#62625b]">
               没有找到符合条件的试卷
             </div>
           ) : (
-            <div className="space-y-16">
-              {Object.keys(papersBySubject).sort().map(subject => (
-                <div key={subject}>
-                  <div className="flex items-center gap-3 mb-8">
-                    <div className="w-8 h-8 rounded-full bg-[#e60023] flex items-center justify-center">
-                      <BookOpen className="w-4 h-4 text-white" />
-                    </div>
-                    <h2 className="text-3xl font-bold text-[#211922]">{subject}</h2>
-                    <span className="px-3 py-1 bg-[#f6f6f3] text-[#62625b] rounded-full text-sm font-medium">
-                      {papersBySubject[subject].length} 份
+            <div className="space-y-8">
+              {Object.keys(papersIndex).sort((a, b) => Number(b) - Number(a)).map(year => (
+                <div key={year} className="border border-gray-100 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                  <div className="bg-gray-50 px-6 py-4 font-bold text-xl text-gray-800 border-b border-gray-100 flex items-center justify-between">
+                    <span>{year} 年</span>
+                    <span className="text-sm font-normal text-gray-500 bg-white px-3 py-1 rounded-full border border-gray-200">
+                      {Object.values(papersIndex[year]).flat().length} 份试卷
                     </span>
                   </div>
-                  
-                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-                    {papersBySubject[subject].map((paper) => (
-                      <div key={paper.id} className="pin-card group">
-                        {/* Visual Preview Placeholder */}
-                        <div className="aspect-[3/4] bg-[#f6f6f3] relative flex items-center justify-center p-8 group-hover:brightness-95 transition-all">
-                          <FileText className="w-16 h-16 text-[#bcbcb3]" />
-                          <div className="absolute top-4 left-4">
-                            <span className="px-3 py-1 bg-white/80 backdrop-blur-sm text-[10px] font-bold rounded-full text-[#211922]">
-                              {paper.year}
-                            </span>
-                          </div>
-                          {/* Hover Overlay Actions */}
-                          <div className="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-3">
-                            <button
-                              onClick={() => handleSummarize(paper.filename)}
-                              disabled={summarizingId === paper.filename}
-                              className="btn-red flex items-center gap-2 transform translate-y-2 group-hover:translate-y-0 transition-transform"
-                            >
-                              {summarizingId === paper.filename ? (
-                                <span className="animate-pulse">识别中...</span>
-                              ) : (
-                                <><Lightbulb className="w-4 h-4" /> AI 总结</>
-                              )}
-                            </button>
-                          </div>
+                  <div className="p-6 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+                    {Object.keys(papersIndex[year]).sort().map(subject => (
+                      <div key={subject} className="bg-white rounded-xl p-5 border border-gray-100 shadow-sm hover:border-gray-200 transition-colors">
+                        <div className="flex items-center justify-between mb-4">
+                          <h3 className="font-bold text-[#e60023] uppercase text-sm flex items-center gap-2">
+                            <span className="w-2 h-2 rounded-full bg-[#e60023]"></span>
+                            {subject}
+                          </h3>
                         </div>
-
-                        {/* Content Info */}
-                        <div className="p-4">
-                          <h3 className="font-bold text-[#211922] line-clamp-1 mb-1" title={paper.name}>{paper.name}</h3>
-                          <div className="flex items-center justify-between text-[12px] text-[#62625b]">
-                            <span>{paper.school}</span>
-                            <a
-                              href={`/api/papers/${encodeURIComponent(paper.filename)}`}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="hover:text-[#e60023]"
-                            >
-                              <ArrowUpRight className="w-4 h-4" />
-                            </a>
-                          </div>
-                        </div>
+                        <ul className="space-y-3 max-h-60 overflow-y-auto custom-scrollbar pr-2">
+                          {papersIndex[year][subject].map((fileObj, idx) => (
+                            <li key={idx} className="group flex flex-col gap-1 p-2 hover:bg-gray-50 rounded-lg transition-colors">
+                              <a 
+                                href={`/api/papers/${encodeURIComponent(fileObj.filename)}`} 
+                                target="_blank" 
+                                rel="noreferrer"
+                                className="text-sm text-gray-700 font-medium hover:text-[#e60023] flex items-start gap-2 transition-colors"
+                              >
+                                <svg className="w-4 h-4 mt-0.5 text-gray-400 group-hover:text-[#e60023] flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                                </svg>
+                                <span className="line-clamp-2" title={fileObj.name}>{fileObj.name}</span>
+                              </a>
+                              <div className="flex justify-end pr-2">
+                                <button
+                                  onClick={() => handleSummarize(fileObj.filename)}
+                                  disabled={summarizingId === fileObj.filename}
+                                  className="text-[11px] font-medium text-gray-500 hover:text-[#e60023] flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                                >
+                                  {summarizingId === fileObj.filename ? (
+                                    <span className="animate-pulse">识别中...</span>
+                                  ) : (
+                                    <><Lightbulb className="w-3 h-3" /> AI 总结</>
+                                  )}
+                                </button>
+                              </div>
+                            </li>
+                          ))}
+                        </ul>
                       </div>
                     ))}
                   </div>
