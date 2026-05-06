@@ -16,6 +16,15 @@ export default function AgentPage() {
   const [results, setResults] = useState<string[]>([]);
   const [historyRecords, setHistoryRecords] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [papersIndex, setPapersIndex] = useState<any>(null);
+
+  // Fetch papers index on mount
+  useEffect(() => {
+    fetch('/papers_index.json')
+      .then(res => res.json())
+      .then(data => setPapersIndex(data))
+      .catch(err => console.error("Failed to load papers index:", err));
+  }, []);
 
   // 连接到后端的 PSLEAgent Durable Object
   // agent 的名字必须与 wrangler.json 中声明的 class 名字一致
@@ -188,6 +197,55 @@ export default function AgentPage() {
               </tbody>
             </table>
           </div>
+        </div>
+
+        {/* 试卷库浏览区 */}
+        <div className="mt-12 bg-white rounded-3xl shadow-sm p-8 border border-gray-200">
+          <div className="mb-6">
+            <h2 className="text-2xl font-bold text-gray-900">历年 PSLE 试卷库</h2>
+            <p className="text-sm text-gray-500 mt-1">浏览并下载自动归档的各科试卷 (2016 - 2024)</p>
+          </div>
+          
+          {!papersIndex ? (
+            <div className="text-center py-12 text-gray-400">正在加载试卷目录...</div>
+          ) : (
+            <div className="space-y-6">
+              {Object.keys(papersIndex).sort((a, b) => Number(b) - Number(a)).map(year => (
+                <div key={year} className="border border-gray-100 rounded-2xl overflow-hidden">
+                  <div className="bg-gray-50 px-6 py-4 font-bold text-lg text-gray-800 border-b border-gray-100">
+                    {year} 年
+                  </div>
+                  <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {Object.keys(papersIndex[year]).map(subject => (
+                      <div key={subject} className="bg-white rounded-xl p-4 border border-gray-100 shadow-sm">
+                        <h3 className="font-bold text-[#e60023] uppercase mb-3 text-sm flex items-center gap-2">
+                          <span className="w-2 h-2 rounded-full bg-[#e60023]"></span>
+                          {subject}
+                        </h3>
+                        <ul className="space-y-2 max-h-48 overflow-y-auto custom-scrollbar pr-2">
+                          {Object.keys(papersIndex[year][subject]).map(file => (
+                            <li key={file}>
+                              <a 
+                                href={`/papers/${year}/${subject}/${file}`} 
+                                target="_blank" 
+                                rel="noreferrer"
+                                className="text-sm text-gray-600 hover:text-[#e60023] hover:underline flex items-start gap-2 group transition-colors"
+                              >
+                                <svg className="w-4 h-4 mt-0.5 text-gray-400 group-hover:text-[#e60023] flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                                </svg>
+                                <span className="truncate">{file}</span>
+                              </a>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>
