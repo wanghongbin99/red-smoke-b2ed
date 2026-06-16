@@ -125,13 +125,6 @@ export default function PsleEnglish() {
                       {item.chinese && <span className="text-xs font-bold text-gray-600 bg-gray-100 px-2 py-1 rounded-md">{item.chinese}</span>}
                     </div>
                     <p className="text-gray-700 font-medium mb-4 text-sm">{item.meaning}</p>
-                    {item.school && (
-                      <div className="mb-3">
-                        <span className="inline-flex items-center gap-1 text-[10px] uppercase tracking-wider font-bold text-white bg-gradient-to-r from-[#435ee5] to-[#6b82ff] px-2.5 py-1 rounded-full shadow-sm">
-                          🏫 {item.school}
-                        </span>
-                      </div>
-                    )}
                     <div className="bg-gray-50 p-4 rounded-2xl">
                       <p className="text-gray-600 text-sm italic">"{item.example}"</p>
                     </div>
