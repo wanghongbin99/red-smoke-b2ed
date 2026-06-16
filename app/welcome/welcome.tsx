@@ -261,6 +261,7 @@ export function Welcome({ message, user }: { message?: string, user?: { id: numb
               <li><a href="#" className="hover:text-white">数学真题</a></li>
               <li><a href="#" className="hover:text-white">科学实验总结</a></li>
               <li><a href="/chinese-vocab" className="hover:text-white">华文好词好句</a></li>
+              <li><a href="/english-vocab" className="hover:text-white">英文词汇语法</a></li>
             </ul>
           </div>
           <div>

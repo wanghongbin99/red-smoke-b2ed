@@ -200,10 +200,15 @@ export const allGradesData: Record<string, any> = {
         icon: <School className="w-6 h-6 text-indigo-500" />,
         items: [
           { word: "勇敢", pinyin: "yǒng gǎn", desc: "不怕危险和困难；有胆量。" },
-          { word: "克服", pinyin: "kè fú", desc: "用坚强的意志和力量战胜。" },
+          { word: "克服", pinyin: "kè fú", desc: "用坚强的意志和力量战胜困难或缺点。" },
           { word: "压力", pinyin: "yā lì", desc: "比喻对人起逼迫威慑作用的力量。" },
           { word: "吸引", pinyin: "xī yǐn", desc: "把别人的注意力引过来。" },
-          { word: "懒惰", pinyin: "lǎn duò", desc: "不爱劳动和工作；不勤快。" }
+          { word: "懒惰", pinyin: "lǎn duò", desc: "不爱劳动和工作；不勤快。" },
+          { word: "锻炼", pinyin: "duàn liàn", desc: "通过体育运动使身体强壮。" },
+          { word: "测验", pinyin: "cè yàn", desc: "考查学习成绩等。" },
+          { word: "严格", pinyin: "yán gé", desc: "在执行制度或掌握标准时认真、不放松。" },
+          { word: "勤奋", pinyin: "qín fèn", desc: "不懈地努力（工作或学习）。" },
+          { word: "目标", pinyin: "mù biāo", desc: "想要达到的境地或标准。" }
         ]
       },
       {
@@ -211,10 +216,15 @@ export const allGradesData: Record<string, any> = {
         icon: <Heart className="w-6 h-6 text-rose-500" />,
         items: [
           { word: "回忆", pinyin: "huí yì", desc: "回想过去的事物。" },
-          { word: "庆祝", pinyin: "qìng zhù", desc: "为共同的喜事进行一些活动表示高兴或纪念。" },
+          { word: "庆祝", pinyin: "qìng zhù", desc: "为共同的喜事进行活动表示高兴或纪念。" },
           { word: "共同", pinyin: "gòng tóng", desc: "大家一起（做）。" },
-          { word: "方便", pinyin: "fāng biàn", desc: "便利。" },
-          { word: "报名", pinyin: "bào míng", desc: "把自己的名字报告给主管的人，表示愿意参加某种活动。" }
+          { word: "方便", pinyin: "fāng biàn", desc: "便利；适合。" },
+          { word: "报名", pinyin: "bào míng", desc: "把自己的名字报告给主管的人，表示愿意参加活动。" },
+          { word: "陪伴", pinyin: "péi bàn", desc: "随同做伴。" },
+          { word: "体谅", pinyin: "tǐ liàng", desc: "设身处地为人着想，给以谅解。" },
+          { word: "感激", pinyin: "gǎn jī", desc: "因为别人的好意或帮助而对他产生好感。" },
+          { word: "疼爱", pinyin: "téng ài", desc: "关切喜爱（多用于长辈对晚辈）。" },
+          { word: "慈祥", pinyin: "cí xiáng", desc: "（老年人的态度、神色）和蔼安详。" }
         ]
       },
       {
@@ -225,7 +235,60 @@ export const allGradesData: Record<string, any> = {
           { word: "智慧", pinyin: "zhì huì", desc: "辨析判断、发明创造的能力。" },
           { word: "团结", pinyin: "tuán jié", desc: "为了集中力量实现共同理想或完成任务而联合或结合。" },
           { word: "模仿", pinyin: "mó fǎng", desc: "照某种现成的样子学着做。" },
-          { word: "折断", pinyin: "zhé duàn", desc: "因受力过大或过猛而断裂。" }
+          { word: "折断", pinyin: "zhé duàn", desc: "因受力过大或过猛而断裂。" },
+          { word: "品尝", pinyin: "pǐn cháng", desc: "仔细地辨别、尝试（滋味）。" },
+          { word: "传统", pinyin: "chuán tǒng", desc: "世代相传的具有特点的社会因素。" },
+          { word: "材料", pinyin: "cái liào", desc: "可以直接造成成品的东西。" },
+          { word: "独特", pinyin: "dú tè", desc: "独有的；特别的。" },
+          { word: "熟悉", pinyin: "shú xī", desc: "知道得很清楚。" }
+        ]
+      },
+      {
+        title: "第四单元：《科技改变生活》",
+        icon: <Globe className="w-6 h-6 text-blue-600" />,
+        items: [
+          { word: "科技", pinyin: "kē jì", desc: "科学技术。" },
+          { word: "沉迷", pinyin: "chén mí", desc: "深深地迷恋着，不能自拔。" },
+          { word: "依赖", pinyin: "yī lài", desc: "依靠某种人或事物而不能自立或自给。" },
+          { word: "沟通", pinyin: "gōu tōng", desc: "使两方能通连（如思想、观念等）。" },
+          { word: "搜索", pinyin: "sōu suǒ", desc: "仔细查找。" },
+          { word: "距离", pinyin: "jù lí", desc: "在空间或时间上相隔（的长度）。" },
+          { word: "取代", pinyin: "qǔ dài", desc: "代替（别人的位置）。" },
+          { word: "缺乏", pinyin: "quē fá", desc: "没有或不够。" },
+          { word: "视力", pinyin: "shì lì", desc: "在一定距离内眼睛辨别物体形状的能力。" },
+          { word: "普遍", pinyin: "pǔ biàn", desc: "存在的面很广；具有共同性的。" }
+        ]
+      },
+      {
+        title: "第五单元：《环保小卫士》",
+        icon: <TreePine className="w-6 h-6 text-green-600" />,
+        items: [
+          { word: "污染", pinyin: "wū rǎn", desc: "使沾染上肮脏的东西或有害的物质。" },
+          { word: "节约", pinyin: "jié yuē", desc: "节省（多用于较大的范围）。" },
+          { word: "塑料", pinyin: "sù liào", desc: "一种工业材料（Plastic）。" },
+          { word: "分类", pinyin: "fēn lèi", desc: "按照种类、等级或性质分别归类。" },
+          { word: "保护", pinyin: "bǎo hù", desc: "尽力照顾，使不受损害。" },
+          { word: "浪费", pinyin: "làng fèi", desc: "对人力、财物等用得不当或没有节制。" },
+          { word: "资源", pinyin: "zī yuán", desc: "生产资料或生活资料的天然来源。" },
+          { word: "习惯", pinyin: "xí guàn", desc: "在长时期里逐渐养成的一时不容易改变的行为。" },
+          { word: "责任", pinyin: "zé rèn", desc: "分内应做的事。" },
+          { word: "提醒", pinyin: "tí xǐng", desc: "从旁指点，促使注意。" }
+        ]
+      },
+      {
+        title: "第六单元：《我爱新加坡》",
+        icon: <Compass className="w-6 h-6 text-red-500" />,
+        items: [
+          { word: "历史", pinyin: "lì shǐ", desc: "过去的事实。" },
+          { word: "建国", pinyin: "jiàn guó", desc: "建立国家。" },
+          { word: "贡献", pinyin: "gòng xiàn", desc: "对国家或公众所做的有益的事。" },
+          { word: "繁荣", pinyin: "fán róng", desc: "（经济或事业）蓬勃发展。" },
+          { word: "和谐", pinyin: "hé xié", desc: "配合得适当和匀称（多指关系）。" },
+          { word: "尊重", pinyin: "zūn zhòng", desc: "尊敬、重视。" },
+          { word: "种族", pinyin: "zhǒng zú", desc: "具有共同起源和共同遗传特征的人群。" },
+          { word: "骄傲", pinyin: "jiāo ào", desc: "自以为了不起，看不起别人；也指自豪。" },
+          { word: "独立", pinyin: "dú lì", desc: "一个国家或一个政权不受别的国家或政权的控制而自主地存在。" },
+          { word: "纪念", pinyin: "jì niàn", desc: "用事物或行动对人或事表示怀念。" }
         ]
       }
     ],
