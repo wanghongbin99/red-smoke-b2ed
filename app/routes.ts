@@ -13,4 +13,5 @@ export default [
   route("api/papers", "routes/api.papers.tsx"),
   route("api/papers/*", "routes/api.papers.$.tsx"),
   route("api/summarize/*", "routes/api.summarize.$.tsx"),
+  route("chinese-vocab", "routes/chinese-vocab.tsx"),
 ] satisfies RouteConfig;
