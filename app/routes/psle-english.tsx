@@ -12,10 +12,15 @@ export function meta({ }: Route.MetaArgs) {
 }
 
 const grammarRules = [
-  { rule: "Subject-Verb Agreement", explanation: "Singular subjects take singular verbs, and plural subjects take plural verbs.", example: "The dog (singular) barks (singular). The dogs (plural) bark (plural)." },
+  { rule: "Subject-Verb Agreement", explanation: "A singular subject takes a singular verb, and a plural subject takes a plural verb. Be careful with complex sentences, collective nouns, indefinite pronouns like 'everyone' or 'nobody' (always singular), and compound subjects.", example: "The box of chocolates is on the table. (Not 'are', because 'box' is the singular subject)." },
+  { rule: "Mastering Verb Tenses", explanation: "Use tenses accurately and avoid tense inconsistency. Simple present is for habits/facts. Simple past is for completed actions. Present perfect is for past actions with present relevance.", example: "She has lived in Singapore for ten years. (Present perfect - action began in the past and is still relevant)." },
+  { rule: "Punctuation Rules That Make a Difference", explanation: "Have a firm grasp of the full stop, comma, question mark, exclamation mark, apostrophe, and speech marks. Possessive pronouns like 'its', 'yours', and 'theirs' never take an apostrophe.", example: "The teacher's pen (possessive) vs. can't (contraction of cannot)." },
+  { rule: "Using Pronouns Correctly", explanation: "Pronouns must match their noun in number and gender (pronoun-antecedent agreement). Do not confuse subject pronouns (I, he, she, they) with object pronouns (me, him, her, them).", example: "My friend and I went to the park. (Not 'Me and my friend went to the park')." },
+  { rule: "Articles: A, An, and The", explanation: "'A' and 'an' are used for non-specific items or referring to something for the first time. 'The' is used when both speaker and listener know exactly what is being referred to. Use 'an' before words that begin with a vowel sound.", example: "an hour (silent 'h') vs. a university ('yoo' sound)." },
+  { rule: "Prepositions and How to Use Them", explanation: "Prepositions show relationships of time, place, and direction. For time: 'at' for specific times, 'on' for days/dates, 'in' for longer periods. For place: 'at' for specific points, 'in' for enclosed spaces, 'on' for surfaces.", example: "at 3 o'clock, on Monday, in the morning, at the bus stop, in the room, on the table." },
+  { rule: "Sentence Structure and Clarity", explanation: "Avoid sentence fragments (incomplete sentences missing a subject or verb) and run-on sentences. Vary sentence structures by using simple, compound, and complex sentences to make writing engaging.", example: "A grammatically correct sentence must contain a subject and a predicate, and it must express a complete thought." },
   { rule: "Neither/Nor and Either/Or", explanation: "When two subjects are joined by 'neither...nor' or 'either...or', the verb agrees with the subject closest to it.", example: "Neither the teacher nor the students are ready. Neither the students nor the teacher is ready." },
-  { rule: "Relative Pronouns (Who vs. Whom)", explanation: "'Who' is used as a subject, while 'whom' is used as an object.", example: "The boy who won the race is my friend. The man whom I saw yesterday is my uncle." },
-  { rule: "Past Perfect Tense", explanation: "Used to describe an action that was completed before another action in the past.", example: "I had finished my homework before my mother came home." }
+  { rule: "Relative Pronouns (Who vs. Whom)", explanation: "'Who' is used as a subject, while 'whom' is used as an object.", example: "The boy who won the race is my friend. The man whom I saw yesterday is my uncle." }
 ];
 
 const situationalCriteria = [
