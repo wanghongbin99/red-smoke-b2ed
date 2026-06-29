@@ -28,7 +28,7 @@ export function Welcome({ message, user }: { message?: string, user?: { id: numb
 
   // AI Summary State
   const [summarizingId, setSummarizingId] = useState<string | null>(null);
-  const [summary, setSummary] = useState<string | null>(null);
+  const [summary, setSummary] = useState<any | null>(null);
   const [showSummary, setShowSummary] = useState(false);
 
   useEffect(() => {
@@ -52,6 +52,8 @@ export function Welcome({ message, user }: { message?: string, user?: { id: numb
       if (data.summary) {
         setSummary(data.summary);
         setShowSummary(true);
+      } else if (data.message) {
+        alert(data.message);
       } else if (data.error) {
         alert("Error: " + data.error);
       }
@@ -224,14 +226,43 @@ export function Welcome({ message, user }: { message?: string, user?: { id: numb
             </div>
 
             <div className="flex-1 overflow-y-auto p-8 custom-scrollbar bg-[#f6f6f3]/50">
-              <div className="prose prose-slate max-w-none">
-                <div className="bg-white p-8 rounded-[24px] shadow-sm border border-[#e5e5e0]">
-                  {summary?.split("\n").map((line, i) => (
-                    <p key={i} className="mb-4 text-[#211922] leading-relaxed text-lg">
-                      {line}
-                    </p>
-                  ))}
-                </div>
+              <div className="max-w-none space-y-6">
+                {typeof summary === 'string' ? (
+                  <div className="bg-white p-8 rounded-[24px] shadow-sm border border-[#e5e5e0]">
+                    {summary.split("\n").map((line: string, i: number) => (
+                      <p key={i} className="mb-4 text-[#211922] leading-relaxed text-lg">
+                        {line}
+                      </p>
+                    ))}
+                  </div>
+                ) : summary ? (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="bg-white p-6 rounded-[24px] shadow-sm border border-[#e5e5e0]">
+                      <h3 className="font-bold text-[#e60023] mb-2 flex items-center gap-2"><BookOpen className="w-4 h-4"/>考点覆盖 (Topics)</h3>
+                      <p className="text-[#211922] leading-relaxed">{summary.topics}</p>
+                    </div>
+                    <div className="bg-white p-6 rounded-[24px] shadow-sm border border-[#e5e5e0]">
+                      <h3 className="font-bold text-[#e60023] mb-2 flex items-center gap-2"><Lightbulb className="w-4 h-4"/>试卷难度预估 (Difficulty)</h3>
+                      <p className="text-[#211922] leading-relaxed">{summary.difficulty}</p>
+                    </div>
+                    <div className="bg-white p-6 rounded-[24px] shadow-sm border border-[#e5e5e0]">
+                      <h3 className="font-bold text-[#e60023] mb-2 flex items-center gap-2"><FileText className="w-4 h-4"/>题型组成 (Question Types)</h3>
+                      <p className="text-[#211922] leading-relaxed">{summary.question_types}</p>
+                    </div>
+                    <div className="bg-white p-6 rounded-[24px] shadow-sm border border-[#e5e5e0]">
+                      <h3 className="font-bold text-[#e60023] mb-2 flex items-center gap-2"><Search className="w-4 h-4"/>简评 (Brief Review)</h3>
+                      <p className="text-[#211922] leading-relaxed">{summary.brief_review}</p>
+                    </div>
+                    <div className="bg-white p-6 rounded-[24px] shadow-sm border border-[#e5e5e0]">
+                      <h3 className="font-bold text-[#e60023] mb-2 flex items-center gap-2"><ChevronRight className="w-4 h-4"/>答案参考 (Answer)</h3>
+                      <p className="text-[#211922] leading-relaxed">{summary.answer}</p>
+                    </div>
+                    <div className="bg-white p-6 rounded-[24px] shadow-sm border border-[#e5e5e0]">
+                      <h3 className="font-bold text-[#e60023] mb-2 flex items-center gap-2"><ArrowUpRight className="w-4 h-4"/>易错难题预警</h3>
+                      <p className="text-[#211922] leading-relaxed">{summary.difficult_question}</p>
+                    </div>
+                  </div>
+                ) : null}
               </div>
             </div>
 
@@ -258,7 +289,7 @@ export function Welcome({ message, user }: { message?: string, user?: { id: numb
           <div>
             <h4 className="font-bold mb-6">资源</h4>
             <ul className="space-y-3 text-[#91918c] text-sm">
-              <li><a href="#" className="hover:text-white">数学真题</a></li>
+              <li><a href="/math-syllabus" className="hover:text-white">数学大纲与知识点</a></li>
               <li><a href="#" className="hover:text-white">科学实验总结</a></li>
               <li><a href="/chinese-vocab" className="hover:text-white">华文好词好句</a></li>
               <li><a href="/english-vocab" className="hover:text-white">英文词汇语法</a></li>

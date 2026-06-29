@@ -58,7 +58,7 @@ const continuousSample = [
 ];
 
 export default function PsleEnglish() {
-  const [activeTab, setActiveTab] = useState<"vocab" | "writing">("vocab");
+  const [activeTab, setActiveTab] = useState<"vocab" | "writing" | "analysis">("vocab");
   const [writingTab, setWritingTab] = useState<"situational" | "continuous">("situational");
   const [searchTerm, setSearchTerm] = useState("");
   
@@ -82,7 +82,7 @@ export default function PsleEnglish() {
         </header>
 
         {/* Custom Tabs */}
-        <div className="flex gap-4 mb-8 bg-white p-2 rounded-2xl shadow-sm border border-gray-100 w-fit">
+        <div className="flex flex-wrap gap-4 mb-8 bg-white p-2 rounded-2xl shadow-sm border border-gray-100 w-fit">
           <button 
             onClick={() => setActiveTab("vocab")}
             className={`px-6 py-3 rounded-xl font-bold transition-all ${activeTab === "vocab" ? "bg-[#e60023] text-white shadow-md scale-105" : "text-gray-500 hover:bg-gray-50"}`}
@@ -94,6 +94,12 @@ export default function PsleEnglish() {
             className={`px-6 py-3 rounded-xl font-bold transition-all ${activeTab === "writing" ? "bg-[#435ee5] text-white shadow-md scale-105" : "text-gray-500 hover:bg-gray-50"}`}
           >
             作文写作 (Writing)
+          </button>
+          <button 
+            onClick={() => setActiveTab("analysis")}
+            className={`px-6 py-3 rounded-xl font-bold transition-all flex items-center gap-2 ${activeTab === "analysis" ? "bg-[#10b981] text-white shadow-md scale-105" : "text-gray-500 hover:bg-gray-50"}`}
+          >
+            <Target className="w-5 h-5" /> 名校试卷分析 (Exam Analysis)
           </button>
         </div>
 
@@ -415,6 +421,131 @@ export default function PsleEnglish() {
                 </section>
               </div>
             )}
+          </div>
+        )}
+
+        {activeTab === "analysis" && (
+          <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 space-y-12">
+            
+            {/* Header Section */}
+            <div className="bg-gradient-to-br from-indigo-900 to-indigo-700 rounded-3xl p-8 md:p-10 shadow-lg text-white">
+              <h2 className="text-3xl font-bold mb-4">2025 ACS (Junior) P6 Prelim English Analysis</h2>
+              <p className="text-indigo-100 leading-relaxed text-lg">
+                这份由新加坡英华自主小学（JUNIOR）提供的2025年小学六年级（Primary 6）英文预考（Preliminary Examination）试卷，是极具代表性的PSLE（小六离校证书）黄金风向标。新加坡的PSLE英文科非常注重学生的语言精准度、语境理解力以及思辨能力。以下是结合PSLE核心考点，对这份试卷的深度分析：
+              </p>
+            </div>
+
+            {/* Part 1: Structure */}
+            <section>
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center text-white shadow-md">
+                  <span className="font-bold">1</span>
+                </div>
+                <h2 className="text-2xl font-bold text-[#211922]">试卷结构与PSLE核心考点映射</h2>
+              </div>
+              
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                
+                {/* 1. Grammar & Vocab MCQ */}
+                <div className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                  <h3 className="text-xl font-bold text-indigo-800 mb-3 border-b border-gray-100 pb-3">语法与词汇选择题 (Grammar & Vocab MCQ)</h3>
+                  <div className="text-sm font-semibold text-gray-500 mb-4 bg-gray-50 inline-block px-3 py-1 rounded-lg">Q1–Q15</div>
+                  <ul className="space-y-4 text-gray-700">
+                    <li className="flex gap-3"><div className="w-1.5 h-1.5 rounded-full bg-indigo-500 mt-2 flex-shrink-0"></div><p><strong className="text-gray-900">主谓一致 (Subject-Verb Agreement):</strong> 如Q1考查 <em>Neither... nor...</em> 的就近原则，邻近主语是单数 <em>his brother</em>，且事情发生在过去（earlier），因此答案选单数过去式 <em>was</em>。</p></li>
+                    <li className="flex gap-3"><div className="w-1.5 h-1.5 rounded-full bg-indigo-500 mt-2 flex-shrink-0"></div><p><strong className="text-gray-900">虚拟语气与倒装 (Conditionals & Inversion):</strong> 如Q7考查 <em>Should he win...</em>，这是PSLE常考的用于代替 <em>If he wins...</em> 的高级语法结构。</p></li>
+                    <li className="flex gap-3"><div className="w-1.5 h-1.5 rounded-full bg-indigo-500 mt-2 flex-shrink-0"></div><p><strong className="text-gray-900">固定搭配与句式:</strong> 如Q10考查 <em>No sooner had I... than...</em>（一……就……）的固定句型。</p></li>
+                    <li className="flex gap-3"><div className="w-1.5 h-1.5 rounded-full bg-indigo-500 mt-2 flex-shrink-0"></div><p><strong className="text-gray-900">高阶词汇与近义词辨析:</strong> 词汇题（Q11–15）及近义词替代题（Q16–20）非常看重词汇在具体语境中的精确运用。如考查 <em>condoned</em>（宽恕/容忍不合法的行为）、<em>infested</em>（横行/蔓延）等高年级必备核心词汇。</p></li>
+                  </ul>
+                </div>
+
+                {/* 2. Visual Text Comprehension */}
+                <div className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                  <h3 className="text-xl font-bold text-indigo-800 mb-3 border-b border-gray-100 pb-3">视觉文本理解 (Visual Text Comprehension)</h3>
+                  <div className="text-sm font-semibold text-gray-500 mb-4 bg-gray-50 inline-block px-3 py-1 rounded-lg">Q21–Q25 (青少年睡眠不足)</div>
+                  <ul className="space-y-4 text-gray-700">
+                    <li className="flex gap-3"><div className="w-1.5 h-1.5 rounded-full bg-indigo-500 mt-2 flex-shrink-0"></div><p><strong className="text-gray-900">多文本对比与信息整合:</strong> 近年来PSLE的趋势是给学生提供多文本（如一份宣传海报 + 一段叙述性文本），考查学生的“媒介素养”。</p></li>
+                    <li className="flex gap-3"><div className="w-1.5 h-1.5 rounded-full bg-indigo-500 mt-2 flex-shrink-0"></div><p><strong className="text-gray-900">作者意图与视觉元素分析:</strong> 如Q21考查提问的目的（<em>aims to make readers reflect</em>），Q22考查海报中插图的作用（<em>convey a clearer message</em>）。这要求学生不仅会读字，还要理解视觉排版和设计的底层逻辑。</p></li>
+                  </ul>
+                </div>
+
+                {/* 3. Cloze */}
+                <div className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                  <h3 className="text-xl font-bold text-indigo-800 mb-3 border-b border-gray-100 pb-3">完形填空 (Grammar & Vocab Cloze)</h3>
+                  <div className="text-sm font-semibold text-gray-500 mb-4 bg-gray-50 inline-block px-3 py-1 rounded-lg">Q26–Q35, Q46–Q60</div>
+                  <ul className="space-y-4 text-gray-700">
+                    <li className="flex gap-3"><div className="w-1.5 h-1.5 rounded-full bg-indigo-500 mt-2 flex-shrink-0"></div><p><strong className="text-gray-900">Grammar Cloze (有选项):</strong> 侧重介词、连词、代词和关系代词的考核。例如考查 <em>which / who</em> 引导的定语从句，以及 <em>however</em> 等逻辑过渡词。</p></li>
+                    <li className="flex gap-3"><div className="w-1.5 h-1.5 rounded-full bg-indigo-500 mt-2 flex-shrink-0"></div><p><strong className="text-gray-900">Comprehension Cloze (无选项填空):</strong> 题眼多且难，公认拉开差距的魔鬼题型。要求极强的语篇前后文逻辑推导能力和固定搭配储备（如 <em>Rome was not built in a day</em>、<em>put effort in</em> 等）。</p></li>
+                  </ul>
+                </div>
+
+                {/* 4. Synthesis & Transformation */}
+                <div className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                  <h3 className="text-xl font-bold text-indigo-800 mb-3 border-b border-gray-100 pb-3">句型转换与合并 (Synthesis & Transformation)</h3>
+                  <div className="text-sm font-semibold text-gray-500 mb-4 bg-gray-50 inline-block px-3 py-1 rounded-lg">Q61–Q65</div>
+                  <ul className="space-y-4 text-gray-700">
+                    <li className="flex gap-3"><div className="w-1.5 h-1.5 rounded-full bg-indigo-500 mt-2 flex-shrink-0"></div><p><strong className="text-gray-900">介词 + 关系代词:</strong> 如Q64的 <em>...for whom...</em> 结构。</p></li>
+                    <li className="flex gap-3"><div className="w-1.5 h-1.5 rounded-full bg-indigo-500 mt-2 flex-shrink-0"></div><p><strong className="text-gray-900">情感名词置前:</strong> 如Q65的 <em>Much to my annoyance, ...</em>（令我十分生气的是……）。</p></li>
+                    <li className="flex gap-3"><div className="w-1.5 h-1.5 rounded-full bg-indigo-500 mt-2 flex-shrink-0"></div><p><strong className="text-gray-900">间接引语 (Reported Speech):</strong> 如Q63的时态和时间副词的转换（<em>tomorrow</em> 转换为 <em>the next day</em>）。</p></li>
+                  </ul>
+                </div>
+
+                {/* 5. Comprehension Open-Ended */}
+                <div className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow lg:col-span-2">
+                  <h3 className="text-xl font-bold text-indigo-800 mb-3 border-b border-gray-100 pb-3">阅读理解问答题 (Comprehension Open-Ended)</h3>
+                  <div className="text-sm font-semibold text-gray-500 mb-4 bg-gray-50 inline-block px-3 py-1 rounded-lg">Q66–Q75 (前总统黄金辉回忆录节选)</div>
+                  <ul className="space-y-4 text-gray-700">
+                    <li className="flex gap-3"><div className="w-1.5 h-1.5 rounded-full bg-indigo-500 mt-2 flex-shrink-0"></div><p><strong className="text-gray-900">本土化与高难度语篇:</strong> PSLE非常青睐具有本土文化色彩或名人传记类的叙事文，这类文章往往带有深厚的情感变化和时代背景。</p></li>
+                    <li className="flex gap-3"><div className="w-1.5 h-1.5 rounded-full bg-indigo-500 mt-2 flex-shrink-0"></div><p><strong className="text-gray-900">代词指代 (Referencing):</strong> 如Q68考查 <em>it</em> 或 <em>one</em> 在文中具体指代什么（如指代搬家这回事、或者指代排在第一个受罚的男孩）。</p></li>
+                    <li className="flex gap-3"><div className="w-1.5 h-1.5 rounded-full bg-indigo-500 mt-2 flex-shrink-0"></div><p><strong className="text-gray-900">推断题 (Inference):</strong> 不再局限于在文中“抄答案”，而是考查“弦外之音”。例如Q74问：校长把藤条称为“魔术棒（magic wand）”说明了校长的什么特点？答案指向校长的幽默、威严或是用这种反差来给学生带来深刻的心理震撼。</p></li>
+                    <li className="flex gap-3"><div className="w-1.5 h-1.5 rounded-full bg-indigo-500 mt-2 flex-shrink-0"></div><p><strong className="text-gray-900">事实与原因真伪辨析 (True/False with Reason):</strong> 要求学生精准定位原文细节，并用完整的因果逻辑写出理由。错一个字或漏掉关键限定词（如 <em>randomly</em> 随机抽查，而不是检查所有人的报告册）都会导致整题没分。</p></li>
+                  </ul>
+                </div>
+
+              </div>
+            </section>
+
+            {/* Part 2: Strategy */}
+            <section>
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-10 h-10 bg-green-600 rounded-xl flex items-center justify-center text-white shadow-md">
+                  <span className="font-bold">2</span>
+                </div>
+                <h2 className="text-2xl font-bold text-[#211922]">备考建议（透视备战 PSLE）</h2>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                
+                <div className="bg-white p-8 rounded-3xl shadow-sm border-t-4 border-green-500 hover:shadow-md transition-shadow">
+                  <div className="w-12 h-12 bg-green-50 rounded-full flex items-center justify-center mb-6 text-green-600">
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path></svg>
+                  </div>
+                  <h3 className="text-lg font-bold text-gray-900 mb-3">攻克语法灰色地带</h3>
+                  <p className="text-gray-600 leading-relaxed text-sm">
+                    熟练掌握倒装句（Should you... / Had I known...）、主谓一致的特殊规则、以及 No sooner... than 等高级句式。这些是高级小学用来筛选高分段（AL1/AL2）学生的常用题。
+                  </p>
+                </div>
+
+                <div className="bg-white p-8 rounded-3xl shadow-sm border-t-4 border-amber-500 hover:shadow-md transition-shadow">
+                  <div className="w-12 h-12 bg-amber-50 rounded-full flex items-center justify-center mb-6 text-amber-600">
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                  </div>
+                  <h3 className="text-lg font-bold text-gray-900 mb-3">强化“语境词汇”记忆</h3>
+                  <p className="text-gray-600 leading-relaxed text-sm">
+                    背单词不能只背中文释义，要放到句子中。必须搞清楚像 condone、instigate、inflicted 这种意思相近但用法完全不同的动词在政务、生活、法律场景下的精准搭配。
+                  </p>
+                </div>
+
+                <div className="bg-white p-8 rounded-3xl shadow-sm border-t-4 border-blue-500 hover:shadow-md transition-shadow">
+                  <div className="w-12 h-12 bg-blue-50 rounded-full flex items-center justify-center mb-6 text-blue-600">
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>
+                  </div>
+                  <h3 className="text-lg font-bold text-gray-900 mb-3">长句拆解与情感推导</h3>
+                  <p className="text-gray-600 leading-relaxed text-sm">
+                    做大阅读时，不仅要看懂故事情节，还要能用“情绪词”（如 Terrified 恐惧, Relieved 宽慰）精准概括人物的心路历程。作答 True/False 时，理由必须高度对齐原文的核心限制性词汇。
+                  </p>
+                </div>
+
+              </div>
+            </section>
           </div>
         )}
       </div>

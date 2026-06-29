@@ -5,6 +5,17 @@ CREATE TABLE IF NOT EXISTS users (
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE IF NOT EXISTS paper_summaries (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  filename TEXT UNIQUE NOT NULL,
+  topics TEXT,
+  difficulty TEXT,
+  question_types TEXT,
+  brief_review TEXT,
+  answer TEXT,
+  difficult_question TEXT,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
 CREATE TABLE IF NOT EXISTS sessions (
   id TEXT PRIMARY KEY,
   user_id INTEGER NOT NULL,
