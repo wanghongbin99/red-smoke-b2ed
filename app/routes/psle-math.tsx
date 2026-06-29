@@ -20,9 +20,9 @@ const mathTopics = [
       { name: "Fractions", desc: "Four operations, fractions as part of a set, division of a proper fraction by a whole number." },
       { name: "Decimals", desc: "Four operations, rounding off, multiplying and dividing by 10, 100, 1000." },
       { name: "Percentage", desc: "Expressing fractions/decimals as percentage, percentage of a quantity, discount, GST, and interest." },
-      { name: "Ratio", desc: "Equivalent ratios, ratio of three quantities, changing ratios." },
-      { name: "Speed", desc: "Distance, time, speed, average speed, and journey scenarios." },
-      { name: "Algebra (P6 only)", desc: "Algebraic expressions in one variable, evaluating expressions, and solving simple equations." }
+      { name: "Ratio (P6)", desc: "Equivalent ratios, ratio of three quantities, changing ratios. (Moved to P6 in revised syllabus)" },
+      { name: "Number Patterns", desc: "Finding rules and patterns in sequences of numbers or shapes.", link: "/math-number-patterns" },
+      { name: "Algebra (P6)", desc: "Algebraic expressions in one variable, evaluating expressions, and solving simple equations." }
     ]
   },
   {
@@ -30,12 +30,12 @@ const mathTopics = [
     icon: <Compass className="w-6 h-6 text-[#e60023]" />,
     color: "red",
     topics: [
-      { name: "Measurement", desc: "Length, mass, volume, time. Conversions between units." },
+      { name: "Measurement", desc: "Length, mass, volume, time. Conversions between units. 12h and 24h clock." },
       { name: "Area & Perimeter", desc: "Square, rectangle, triangle, parallelogram, rhombus, and trapezium." },
       { name: "Volume", desc: "Volume of cube, cuboid, and liquid. Rate of flow." },
       { name: "Angles & Geometry", desc: "Angles on a straight line, at a point, vertically opposite angles. Properties of triangles and quadrilaterals." },
-      { name: "Circles (P6 only)", desc: "Radius, diameter, circumference, area, semi-circle, and quarter circle." },
-      { name: "Nets (P6 only)", desc: "Nets of cubes, cuboids, prisms, and pyramids." }
+      { name: "Circles (P6)", desc: "Radius, diameter, circumference, area, semi-circle, and quarter circle." },
+      { name: "Nets", desc: "Nets of cubes, cuboids, prisms, and pyramids. (Moved to P4 in revised syllabus)" }
     ]
   },
   {
@@ -44,7 +44,8 @@ const mathTopics = [
     color: "green",
     topics: [
       { name: "Data Analysis", desc: "Reading and interpreting tables, bar graphs, and line graphs." },
-      { name: "Pie Charts (P6 only)", desc: "Reading and interpreting pie charts, calculating percentages and angles." }
+      { name: "Average (P6)", desc: "Average of a set of data, finding total given average. (Moved to P6 in revised syllabus)" },
+      { name: "Pie Charts", desc: "Reading and interpreting pie charts, calculating percentages and angles. (Moved to P4 in revised syllabus)" }
     ]
   }
 ];
@@ -53,23 +54,23 @@ const examFormat = [
   { 
     paper: "Paper 1 (Booklet A)", 
     type: "Multiple Choice (MCQ)", 
-    marks: 20, 
+    marks: 26, 
     time: "1 hour (Paper 1 total)", 
-    desc: "15 questions (1 & 2 marks each). Calculators are NOT allowed." 
+    desc: "18 questions. Calculators are NOT allowed." 
   },
   { 
     paper: "Paper 1 (Booklet B)", 
     type: "Short Answer", 
-    marks: 25, 
+    marks: 24, 
     time: "1 hour (Paper 1 total)", 
-    desc: "15 questions (1 & 2 marks each). Calculators are NOT allowed." 
+    desc: "12 questions. Calculators are NOT allowed." 
   },
   { 
     paper: "Paper 2", 
     type: "Short & Long Answer", 
-    marks: 55, 
+    marks: 50, 
     time: "1 hour 30 minutes", 
-    desc: "17 questions (2 to 5 marks each). Calculators ARE allowed. Show all workings clearly." 
+    desc: "Fewer questions than before to allow more time for problem-solving. Calculators ARE allowed. Show all workings clearly." 
   }
 ];
 
@@ -123,15 +124,30 @@ export default function PsleMath() {
                 </div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {section.topics.map((topic, tIdx) => (
-                    <div key={tIdx} className="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
-                      <div className="flex items-center gap-2 mb-3">
-                        <CheckCircle className={`w-5 h-5 ${section.color === 'blue' ? 'text-blue-500' : section.color === 'red' ? 'text-red-500' : 'text-green-500'}`} />
-                        <h3 className="text-xl font-bold text-gray-900">{topic.name}</h3>
+                  {section.topics.map((topic, tIdx) => {
+                    const CardContent = (
+                      <>
+                        <div className="flex items-center justify-between mb-3">
+                          <div className="flex items-center gap-2">
+                            <CheckCircle className={`w-5 h-5 ${section.color === 'blue' ? 'text-blue-500' : section.color === 'red' ? 'text-red-500' : 'text-green-500'}`} />
+                            <h3 className="text-xl font-bold text-gray-900">{topic.name}</h3>
+                          </div>
+                          {topic.link && <span className="text-xs bg-[#435ee5] text-white px-2 py-1 rounded-full">练习题</span>}
+                        </div>
+                        <p className="text-gray-600 text-sm leading-relaxed">{topic.desc}</p>
+                      </>
+                    );
+
+                    return topic.link ? (
+                      <Link to={topic.link} key={tIdx} className="block bg-white p-6 rounded-3xl shadow-sm border border-gray-100 hover:shadow-md transition-all hover:border-[#435ee5] hover:scale-[1.02]">
+                        {CardContent}
+                      </Link>
+                    ) : (
+                      <div key={tIdx} className="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                        {CardContent}
                       </div>
-                      <p className="text-gray-600 text-sm leading-relaxed">{topic.desc}</p>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </section>
             ))}
@@ -297,13 +313,13 @@ export default function PsleMath() {
                       <p className="text-gray-600 text-sm mt-1">第8题通过两人剩下的贴纸数量相等，利用分子化为相同来对齐总份数。</p>
                     </div>
                   </div>
-                  <div className="flex gap-3 items-start">
+                  <Link to="/math-number-patterns" className="group flex gap-3 items-start block p-4 -m-4 rounded-2xl hover:bg-gray-50 transition-colors border border-transparent hover:border-gray-200">
                     <CheckCircle className="w-5 h-5 text-[#e60023] shrink-0 mt-0.5" />
                     <div>
-                      <strong className="text-gray-900">复杂速度与追及 (Speed)</strong>
-                      <p className="text-gray-600 text-sm mt-1">第5题和第13(b)题考查同一路段行驶的路程差与时间关系，以及相向而行时的运动距离。</p>
+                      <strong className="text-gray-900 group-hover:text-[#e60023] transition-colors">找规律与数列 (Number Patterns) ↗</strong>
+                      <p className="text-gray-600 text-sm mt-1">根据给出的图形或数字排列，找出隐藏的规律，推导第 N 项的数量或总和。</p>
                     </div>
-                  </div>
+                  </Link>
                   <div className="flex gap-3 items-start">
                     <CheckCircle className="w-5 h-5 text-[#e60023] shrink-0 mt-0.5" />
                     <div>

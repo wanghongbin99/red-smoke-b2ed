@@ -32,8 +32,8 @@ export default function ChineseVocab() {
 
       <div className="max-w-[1200px] mx-auto px-6 py-12">
         <header className="mb-8 text-center">
-          <h1 className="text-4xl font-bold text-[#211922] mb-4">《欢乐伙伴》核心词汇库</h1>
-          <p className="text-lg text-[#62625b]">覆盖小学各年级必背生字与好词好句，助你稳拿高分！</p>
+          <h1 className="text-4xl font-bold text-[#211922] mb-4">《欢乐伙伴》/《学华语》新大纲核心词汇库</h1>
+          <p className="text-lg text-[#62625b]">覆盖小学各年级必背生字与好词好句（紧贴 SEAB 最新命题趋势），助你稳拿高分！</p>
         </header>
 
         {/* 年级切换 Tabs */}
@@ -63,7 +63,7 @@ export default function ChineseVocab() {
             <section className="mb-16">
               <h2 className="text-2xl font-bold text-[#211922] mb-8 flex items-center gap-2">
                 <BookMarked className="text-emerald-600 w-7 h-7" />
-                {activeGrade} 《欢乐伙伴》课本核心词汇
+                {activeGrade} 官方课本核心词汇 (紧扣最新大纲)
               </h2>
               
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

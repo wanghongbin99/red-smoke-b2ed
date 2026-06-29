@@ -27,7 +27,7 @@ const situationalCriteria = [
   { title: "Format", desc: "Did you use the correct format for the type of writing (Formal/Informal Email, Letter, Report, Article)?" },
   { title: "Tone", desc: "Did you use a suitable formal or informal tone according to your audience?" },
   { title: "Clarity & Conciseness", desc: "Is your writing clear and concise? Avoid long or jumbled sentences." },
-  { title: "Content", desc: "Are all given points in the question included in your piece?" },
+  { title: "Content", desc: "Are all given points in the question included? Did you generate at least one original idea not in the stimulus (2025/2026 syllabus)? " },
   { title: "Language Use", desc: "Is your writing free from grammatical and spelling errors? Is your range of vocabulary wide?" }
 ];
 
@@ -461,10 +461,10 @@ export default function PsleEnglish() {
                 {/* 2. Visual Text Comprehension */}
                 <div className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
                   <h3 className="text-xl font-bold text-indigo-800 mb-3 border-b border-gray-100 pb-3">视觉文本理解 (Visual Text Comprehension)</h3>
-                  <div className="text-sm font-semibold text-gray-500 mb-4 bg-gray-50 inline-block px-3 py-1 rounded-lg">Q21–Q25 (青少年睡眠不足)</div>
+                  <div className="text-sm font-semibold text-gray-500 mb-4 bg-gray-50 inline-block px-3 py-1 rounded-lg">Q21–Q25 (双文本跨篇章联系)</div>
                   <ul className="space-y-4 text-gray-700">
-                    <li className="flex gap-3"><div className="w-1.5 h-1.5 rounded-full bg-indigo-500 mt-2 flex-shrink-0"></div><p><strong className="text-gray-900">多文本对比与信息整合:</strong> 近年来PSLE的趋势是给学生提供多文本（如一份宣传海报 + 一段叙述性文本），考查学生的“媒介素养”。</p></li>
-                    <li className="flex gap-3"><div className="w-1.5 h-1.5 rounded-full bg-indigo-500 mt-2 flex-shrink-0"></div><p><strong className="text-gray-900">作者意图与视觉元素分析:</strong> 如Q21考查提问的目的（<em>aims to make readers reflect</em>），Q22考查海报中插图的作用（<em>convey a clearer message</em>）。这要求学生不仅会读字，还要理解视觉排版和设计的底层逻辑。</p></li>
+                    <li className="flex gap-3"><div className="w-1.5 h-1.5 rounded-full bg-indigo-500 mt-2 flex-shrink-0"></div><p><strong className="text-gray-900">多文本对比与信息整合 (2025/2026 新规):</strong> PSLE现已固定给学生提供双文本（如一份视觉海报 + 一段纯文本），明确考查跨文本连接（text-to-text connections）能力。</p></li>
+                    <li className="flex gap-3"><div className="w-1.5 h-1.5 rounded-full bg-indigo-500 mt-2 flex-shrink-0"></div><p><strong className="text-gray-900">作者意图与视觉元素分析:</strong> 考查提问的目的以及海报插图的作用。这要求学生不仅会读字，还要理解视觉排版和设计的底层逻辑。</p></li>
                   </ul>
                 </div>
 
@@ -512,7 +512,7 @@ export default function PsleEnglish() {
                 </div>
                 <h2 className="text-2xl font-bold text-[#211922]">备考建议（透视备战 PSLE）</h2>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-6">
                 
                 <div className="bg-white p-8 rounded-3xl shadow-sm border-t-4 border-green-500 hover:shadow-md transition-shadow">
                   <div className="w-12 h-12 bg-green-50 rounded-full flex items-center justify-center mb-6 text-green-600">
@@ -520,7 +520,7 @@ export default function PsleEnglish() {
                   </div>
                   <h3 className="text-lg font-bold text-gray-900 mb-3">攻克语法灰色地带</h3>
                   <p className="text-gray-600 leading-relaxed text-sm">
-                    熟练掌握倒装句（Should you... / Had I known...）、主谓一致的特殊规则、以及 No sooner... than 等高级句式。这些是高级小学用来筛选高分段（AL1/AL2）学生的常用题。
+                    熟练掌握倒装句、主谓一致的特殊规则、以及 No sooner... than 等高级句式。这些是筛选高分段（AL1/AL2）的常用题。
                   </p>
                 </div>
 
@@ -530,7 +530,7 @@ export default function PsleEnglish() {
                   </div>
                   <h3 className="text-lg font-bold text-gray-900 mb-3">强化“语境词汇”记忆</h3>
                   <p className="text-gray-600 leading-relaxed text-sm">
-                    背单词不能只背中文释义，要放到句子中。必须搞清楚像 condone、instigate、inflicted 这种意思相近但用法完全不同的动词在政务、生活、法律场景下的精准搭配。
+                    背单词不能只背中文释义，要放到句子中。必须搞清楚动词在政务、生活、法律场景下的精准搭配。
                   </p>
                 </div>
 
@@ -540,7 +540,17 @@ export default function PsleEnglish() {
                   </div>
                   <h3 className="text-lg font-bold text-gray-900 mb-3">长句拆解与情感推导</h3>
                   <p className="text-gray-600 leading-relaxed text-sm">
-                    做大阅读时，不仅要看懂故事情节，还要能用“情绪词”（如 Terrified 恐惧, Relieved 宽慰）精准概括人物的心路历程。作答 True/False 时，理由必须高度对齐原文的核心限制性词汇。
+                    做阅读时，要能用情绪词精准概括人物历程。作答 T/F 时，理由必须高度对齐原文的核心限制性词汇。
+                  </p>
+                </div>
+
+                <div className="bg-white p-8 rounded-3xl shadow-sm border-t-4 border-purple-500 hover:shadow-md transition-shadow">
+                  <div className="w-12 h-12 bg-purple-50 rounded-full flex items-center justify-center mb-6 text-purple-600">
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path></svg>
+                  </div>
+                  <h3 className="text-lg font-bold text-gray-900 mb-3">口试口语的比重提升</h3>
+                  <p className="text-gray-600 leading-relaxed text-sm">
+                    口试比重提升至20%（40分）。朗读环节加入了PACT提示词，看图说话使用真实的独立照片并删除子提示词，要求极强临场思辨能力。
                   </p>
                 </div>
 

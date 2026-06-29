@@ -93,7 +93,7 @@ export function Welcome({ message, user }: { message?: string, user?: { id: numb
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-[#62625b] w-4 h-4" />
           <input
             type="text"
-            placeholder="搜索科目、学校或年份..."
+            placeholder="搜索科目、学校或年份... (Search Subjects, Schools or Years...)"
             className="w-full pl-11 pr-4 py-3 bg-[#e5e5e0] rounded-full border-none focus:ring-2 focus:ring-[#435ee5] text-[#211922] placeholder-[#62625b]"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
@@ -105,7 +105,7 @@ export function Welcome({ message, user }: { message?: string, user?: { id: numb
             <div className="flex items-center gap-4">
               <span className="text-gray-600 font-medium hidden sm:inline-block">欢迎, {user.email}</span>
               <a href="/agent" className="px-4 py-2 bg-black text-white font-bold rounded-full hover:bg-gray-800 transition-colors shadow-sm">
-                ✨ 咨询 AI 专家
+                ✨ 咨询 AI 专家 (Consult AI Expert)
               </a>
               <form action="/logout" method="post">
                 <button type="submit" className="px-4 py-2 bg-gray-200 text-gray-800 font-bold rounded-full hover:bg-gray-300 transition-colors">
@@ -133,18 +133,18 @@ export function Welcome({ message, user }: { message?: string, user?: { id: numb
         {/* 试卷库浏览区 */}
         <section className="bg-white rounded-3xl shadow-sm p-8 border border-gray-200">
           <div className="mb-8">
-            <h2 className="text-3xl font-bold text-gray-900">历年 PSLE 试卷库</h2>
-            <p className="text-gray-500 mt-2">浏览并下载自动归档的各科试卷 (2016 - 2024)</p>
+            <h2 className="text-3xl font-bold text-gray-900">历年 PSLE 试卷库 (Past Year PSLE Exam Papers)</h2>
+            <p className="text-gray-500 mt-2">浏览并下载自动归档的各科试卷 (Browse and download automatically archived exam papers) (2016 - 2024)</p>
           </div>
           
           {loading ? (
             <div className="text-center py-12 text-gray-400 flex flex-col items-center">
               <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-[#e60023] mb-4"></div>
-              正在加载试卷目录...
+              正在加载试卷目录... (Loading exam papers directory...)
             </div>
           ) : Object.keys(papersIndex).length === 0 ? (
             <div className="flex justify-center py-20 text-[#62625b]">
-              没有找到符合条件的试卷
+              没有找到符合条件的试卷 (No matching exam papers found)
             </div>
           ) : (
             <div className="space-y-8">
@@ -153,7 +153,7 @@ export function Welcome({ message, user }: { message?: string, user?: { id: numb
                   <div className="bg-gray-50 px-6 py-4 font-bold text-xl text-gray-800 border-b border-gray-100 flex items-center justify-between">
                     <span>{year} 年</span>
                     <span className="text-sm font-normal text-gray-500 bg-white px-3 py-1 rounded-full border border-gray-200">
-                      {Object.values(papersIndex[year]).flat().length} 份试卷
+                      {Object.values(papersIndex[year]).flat().length} 份试卷 (Papers)
                     </span>
                   </div>
                   <div className="p-6 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
@@ -186,9 +186,9 @@ export function Welcome({ message, user }: { message?: string, user?: { id: numb
                                   className="text-[11px] font-medium text-gray-500 hover:text-[#e60023] flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity"
                                 >
                                   {summarizingId === fileObj.filename ? (
-                                    <span className="animate-pulse">识别中...</span>
+                                    <span className="animate-pulse">识别中... (Analyzing...)</span>
                                   ) : (
-                                    <><Lightbulb className="w-3 h-3" /> AI 总结</>
+                                    <><Lightbulb className="w-3 h-3" /> AI 总结 (AI Summary)</>
                                   )}
                                 </button>
                               </div>
@@ -215,7 +215,7 @@ export function Welcome({ message, user }: { message?: string, user?: { id: numb
                 <div className="w-10 h-10 bg-[#e60023] rounded-full flex items-center justify-center text-white">
                   <Lightbulb className="w-6 h-6" />
                 </div>
-                <h2 className="text-2xl font-bold text-[#211922]">AI 知识点透视</h2>
+                <h2 className="text-2xl font-bold text-[#211922]">AI 知识点透视 (AI Knowledge Points Insights)</h2>
               </div>
               <button
                 onClick={() => setShowSummary(false)}
@@ -258,7 +258,7 @@ export function Welcome({ message, user }: { message?: string, user?: { id: numb
                       <p className="text-[#211922] leading-relaxed">{summary.answer}</p>
                     </div>
                     <div className="bg-white p-6 rounded-[24px] shadow-sm border border-[#e5e5e0]">
-                      <h3 className="font-bold text-[#e60023] mb-2 flex items-center gap-2"><ArrowUpRight className="w-4 h-4"/>易错难题预警</h3>
+                      <h3 className="font-bold text-[#e60023] mb-2 flex items-center gap-2"><ArrowUpRight className="w-4 h-4"/>易错难题预警 (Alerts)</h3>
                       <p className="text-[#211922] leading-relaxed">{summary.difficult_question}</p>
                     </div>
                   </div>
@@ -287,12 +287,12 @@ export function Welcome({ message, user }: { message?: string, user?: { id: numb
             </p>
           </div>
           <div>
-            <h4 className="font-bold mb-6">资源</h4>
+            <h4 className="font-bold mb-6">资源 (Resources)</h4>
             <ul className="space-y-3 text-[#91918c] text-sm">
-              <li><a href="/math-syllabus" className="hover:text-white">数学大纲与知识点</a></li>
-              <li><a href="#" className="hover:text-white">科学实验总结</a></li>
-              <li><a href="/chinese-vocab" className="hover:text-white">华文好词好句</a></li>
-              <li><a href="/english-vocab" className="hover:text-white">英文词汇语法</a></li>
+              <li><a href="/math-syllabus" className="hover:text-white">数学大纲与知识点 (Math Syllabus)</a></li>
+              <li><a href="/science-syllabus" className="hover:text-white">科学大纲与知识点 (Science Syllabus)</a></li>
+              <li><a href="/chinese-vocab" className="hover:text-white">华文好词好句 (Chinese Vocabulary)</a></li>
+              <li><a href="/english-vocab" className="hover:text-white">英文词汇语法 (English Grammar)</a></li>
             </ul>
           </div>
           <div>
