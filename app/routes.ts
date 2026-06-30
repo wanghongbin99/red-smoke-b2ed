@@ -14,7 +14,7 @@ export default [
   route("api/papers/*", "routes/api.papers.$.tsx"),
   route("api/summarize/*", "routes/api.summarize.$.tsx"),
   route("math-syllabus", "routes/psle-math.tsx"),
-  route("math-number-patterns", "routes/psle-math-number-patterns.tsx"),
+  route("math/:topicId", "routes/psle-math-topic.tsx"),
   route("english-vocab", "routes/psle-english.tsx"),
   route("chinese-vocab", "routes/chinese-vocab.tsx"),
   route("science-syllabus", "routes/psle-science.tsx"),

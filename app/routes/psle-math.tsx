@@ -16,13 +16,13 @@ const mathTopics = [
     icon: <Calculator className="w-6 h-6 text-[#435ee5]" />,
     color: "blue",
     topics: [
-      { name: "Whole Numbers", desc: "Four operations, order of operations, factors, multiples, and rounding off." },
-      { name: "Fractions", desc: "Four operations, fractions as part of a set, division of a proper fraction by a whole number." },
-      { name: "Decimals", desc: "Four operations, rounding off, multiplying and dividing by 10, 100, 1000." },
-      { name: "Percentage", desc: "Expressing fractions/decimals as percentage, percentage of a quantity, discount, GST, and interest." },
-      { name: "Ratio (P6)", desc: "Equivalent ratios, ratio of three quantities, changing ratios. (Moved to P6 in revised syllabus)" },
-      { name: "Number Patterns", desc: "Finding rules and patterns in sequences of numbers or shapes.", link: "/math-number-patterns" },
-      { name: "Algebra (P6)", desc: "Algebraic expressions in one variable, evaluating expressions, and solving simple equations." }
+      { id: "whole-numbers", name: "Whole Numbers", desc: "Four operations, order of operations, factors, multiples, and rounding off." },
+      { id: "fractions", name: "Fractions", desc: "Four operations, fractions as part of a set, division of a proper fraction by a whole number." },
+      { id: "decimals", name: "Decimals", desc: "Four operations, rounding off, multiplying and dividing by 10, 100, 1000." },
+      { id: "percentage", name: "Percentage", desc: "Expressing fractions/decimals as percentage, percentage of a quantity, discount, GST, and interest." },
+      { id: "ratio", name: "Ratio (P6)", desc: "Equivalent ratios, ratio of three quantities, changing ratios. (Moved to P6 in revised syllabus)" },
+      { id: "number-patterns", name: "Number Patterns", desc: "Finding rules and patterns in sequences of numbers or shapes." },
+      { id: "algebra", name: "Algebra (P6)", desc: "Algebraic expressions in one variable, evaluating expressions, and solving simple equations." }
     ]
   },
   {
@@ -30,12 +30,12 @@ const mathTopics = [
     icon: <Compass className="w-6 h-6 text-[#e60023]" />,
     color: "red",
     topics: [
-      { name: "Measurement", desc: "Length, mass, volume, time. Conversions between units. 12h and 24h clock." },
-      { name: "Area & Perimeter", desc: "Square, rectangle, triangle, parallelogram, rhombus, and trapezium." },
-      { name: "Volume", desc: "Volume of cube, cuboid, and liquid. Rate of flow." },
-      { name: "Angles & Geometry", desc: "Angles on a straight line, at a point, vertically opposite angles. Properties of triangles and quadrilaterals." },
-      { name: "Circles (P6)", desc: "Radius, diameter, circumference, area, semi-circle, and quarter circle." },
-      { name: "Nets", desc: "Nets of cubes, cuboids, prisms, and pyramids. (Moved to P4 in revised syllabus)" }
+      { id: "measurement", name: "Measurement", desc: "Length, mass, volume, time. Conversions between units. 12h and 24h clock." },
+      { id: "area-perimeter", name: "Area & Perimeter", desc: "Square, rectangle, triangle, parallelogram, rhombus, and trapezium." },
+      { id: "volume", name: "Volume", desc: "Volume of cube, cuboid, and liquid. Rate of flow." },
+      { id: "angles-geometry", name: "Angles & Geometry", desc: "Angles on a straight line, at a point, vertically opposite angles. Properties of triangles and quadrilaterals." },
+      { id: "circles", name: "Circles (P6)", desc: "Radius, diameter, circumference, area, semi-circle, and quarter circle." },
+      { id: "nets", name: "Nets", desc: "Nets of cubes, cuboids, prisms, and pyramids. (Moved to P4 in revised syllabus)" }
     ]
   },
   {
@@ -43,9 +43,9 @@ const mathTopics = [
     icon: <PieChart className="w-6 h-6 text-[#10b981]" />,
     color: "green",
     topics: [
-      { name: "Data Analysis", desc: "Reading and interpreting tables, bar graphs, and line graphs." },
-      { name: "Average (P6)", desc: "Average of a set of data, finding total given average. (Moved to P6 in revised syllabus)" },
-      { name: "Pie Charts", desc: "Reading and interpreting pie charts, calculating percentages and angles. (Moved to P4 in revised syllabus)" }
+      { id: "data-analysis", name: "Data Analysis", desc: "Reading and interpreting tables, bar graphs, and line graphs." },
+      { id: "average", name: "Average (P6)", desc: "Average of a set of data, finding total given average. (Moved to P6 in revised syllabus)" },
+      { id: "pie-charts", name: "Pie Charts", desc: "Reading and interpreting pie charts, calculating percentages and angles. (Moved to P4 in revised syllabus)" }
     ]
   }
 ];
@@ -132,14 +132,14 @@ export default function PsleMath() {
                             <CheckCircle className={`w-5 h-5 ${section.color === 'blue' ? 'text-blue-500' : section.color === 'red' ? 'text-red-500' : 'text-green-500'}`} />
                             <h3 className="text-xl font-bold text-gray-900">{topic.name}</h3>
                           </div>
-                          {topic.link && <span className="text-xs bg-[#435ee5] text-white px-2 py-1 rounded-full">练习题</span>}
+                          {topic.id && <span className="text-xs bg-[#435ee5] text-white px-2 py-1 rounded-full">练习题</span>}
                         </div>
                         <p className="text-gray-600 text-sm leading-relaxed">{topic.desc}</p>
                       </>
                     );
 
-                    return topic.link ? (
-                      <Link to={topic.link} key={tIdx} className="block bg-white p-6 rounded-3xl shadow-sm border border-gray-100 hover:shadow-md transition-all hover:border-[#435ee5] hover:scale-[1.02]">
+                    return topic.id ? (
+                      <Link to={`/math/${topic.id}`} key={tIdx} className="block bg-white p-6 rounded-3xl shadow-sm border border-gray-100 hover:shadow-md transition-all hover:border-[#435ee5] hover:scale-[1.02]">
                         {CardContent}
                       </Link>
                     ) : (
@@ -313,7 +313,7 @@ export default function PsleMath() {
                       <p className="text-gray-600 text-sm mt-1">第8题通过两人剩下的贴纸数量相等，利用分子化为相同来对齐总份数。</p>
                     </div>
                   </div>
-                  <Link to="/math-number-patterns" className="group flex gap-3 items-start block p-4 -m-4 rounded-2xl hover:bg-gray-50 transition-colors border border-transparent hover:border-gray-200">
+                  <Link to="/math/number-patterns" className="group flex gap-3 items-start block p-4 -m-4 rounded-2xl hover:bg-gray-50 transition-colors border border-transparent hover:border-gray-200">
                     <CheckCircle className="w-5 h-5 text-[#e60023] shrink-0 mt-0.5" />
                     <div>
                       <strong className="text-gray-900 group-hover:text-[#e60023] transition-colors">找规律与数列 (Number Patterns) ↗</strong>

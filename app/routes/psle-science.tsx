@@ -1,5 +1,5 @@
 import type { Route } from "./+types/psle-science";
-import { ArrowLeft, Lightbulb, FileText, Target, Microscope, Leaf, FlaskConical, Globe, Zap, Settings, Activity } from "lucide-react";
+import { ArrowLeft, Lightbulb, FileText, Target, Microscope, Leaf, FlaskConical, Globe, Zap, Settings, Activity, Calendar, ListChecks, AlertCircle, BookOpen } from "lucide-react";
 import { Link } from "react-router";
 import { useState } from "react";
 
@@ -189,41 +189,126 @@ export default function PsleScience() {
 
           {activeTab === "analysis" && (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 animate-in fade-in slide-in-from-bottom-4">
-              <div className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100">
-                <div className="w-12 h-12 bg-blue-50 rounded-2xl flex items-center justify-center mb-6">
-                  <Microscope className="w-6 h-6 text-blue-500" />
+              <div className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 md:col-span-2">
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="w-12 h-12 bg-blue-50 rounded-2xl flex items-center justify-center">
+                    <Microscope className="w-6 h-6 text-blue-500" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold">The "3 INs" Framework & CER Technique</h3>
+                    <p className="text-gray-500 text-sm">Understanding what PSLE Science really tests</p>
+                  </div>
                 </div>
-                <h3 className="text-xl font-bold mb-4">The "3 INs" Framework</h3>
-                <p className="text-gray-600 leading-relaxed mb-4">
-                  The latest syllabus strongly emphasizes inquiry-based learning rather than rote memorization. Students must demonstrate the ability to:
-                </p>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div>
+                    <p className="text-gray-600 leading-relaxed mb-4">
+                      The syllabus strongly emphasizes <b>inquiry-based learning</b> over rote memorization.
+                    </p>
+                    <ul className="space-y-3 text-gray-600">
+                      <li className="flex items-start gap-2"><Lightbulb className="w-5 h-5 text-blue-500 flex-shrink-0 mt-0.5" /> <span><b>Inspired by Science:</b> Show curiosity and engagement.</span></li>
+                      <li className="flex items-start gap-2"><Lightbulb className="w-5 h-5 text-blue-500 flex-shrink-0 mt-0.5" /> <span><b>Inquire like Scientists:</b> Ask questions, analyze data, and reason logically.</span></li>
+                      <li className="flex items-start gap-2"><Lightbulb className="w-5 h-5 text-blue-500 flex-shrink-0 mt-0.5" /> <span><b>Innovate using Science:</b> Apply concepts to new, real-world problems.</span></li>
+                    </ul>
+                  </div>
+                  <div>
+                    <p className="text-gray-600 leading-relaxed mb-4">
+                      For Booklet B (Open-Ended Questions), master the <b>CER framework</b>:
+                    </p>
+                    <ul className="space-y-3 text-gray-600">
+                      <li className="flex gap-2">
+                        <span className="font-bold text-[#e60023] mt-0.5">C</span>
+                        <span><b>Claim:</b> Directly answer the question based on observation.</span>
+                      </li>
+                      <li className="flex gap-2">
+                        <span className="font-bold text-[#e60023] mt-0.5">E</span>
+                        <span><b>Evidence:</b> Cite specific data or observations from the given scenario.</span>
+                      </li>
+                      <li className="flex gap-2">
+                        <span className="font-bold text-[#e60023] mt-0.5">R</span>
+                        <span><b>Reasoning:</b> Link evidence back to the underlying scientific concept.</span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100">
+                <div className="w-12 h-12 bg-purple-50 rounded-2xl flex items-center justify-center mb-6">
+                  <Calendar className="w-6 h-6 text-purple-500" />
+                </div>
+                <h3 className="text-xl font-bold mb-4">Realistic Revision Plan</h3>
+                <p className="text-gray-600 leading-relaxed mb-4">Adjust your strategy based on your timeline:</p>
+                <div className="space-y-4">
+                  <div className="p-4 bg-gray-50 rounded-xl">
+                    <h4 className="font-bold text-gray-800 text-sm mb-1">Early Starters (P5 / Early P6)</h4>
+                    <p className="text-gray-600 text-sm">Focus on topic mastery and concept clarity. Steady revision, short practices (10-15 Qs), and regular correction.</p>
+                  </div>
+                  <div className="p-4 bg-gray-50 rounded-xl">
+                    <h4 className="font-bold text-gray-800 text-sm mb-1">Late Starters (Near Prelims)</h4>
+                    <p className="text-gray-600 text-sm">Target high-frequency weak topics, review errors from school papers, and do timed practice.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100">
+                <div className="w-12 h-12 bg-green-50 rounded-2xl flex items-center justify-center mb-6">
+                  <BookOpen className="w-6 h-6 text-green-500" />
+                </div>
+                <h3 className="text-xl font-bold mb-4">Effective Topic Revision</h3>
                 <ul className="space-y-3 text-gray-600">
-                  <li className="flex items-center gap-2"><Lightbulb className="w-4 h-4 text-blue-500" /> <b>Inspired by Science:</b> Show curiosity and engagement.</li>
-                  <li className="flex items-center gap-2"><Lightbulb className="w-4 h-4 text-blue-500" /> <b>Inquire like Scientists:</b> Ask questions, analyze data, and reason logically.</li>
-                  <li className="flex items-center gap-2"><Lightbulb className="w-4 h-4 text-blue-500" /> <b>Innovate using Science:</b> Apply concepts to new, real-world problems.</li>
+                  <li className="flex items-start gap-2">
+                    <div className="w-1.5 h-1.5 rounded-full bg-green-500 mt-2 flex-shrink-0" />
+                    <span><b>Group into Clusters:</b> Connect ideas by revising related chapters together (e.g., Diversity & Interactions).</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <div className="w-1.5 h-1.5 rounded-full bg-green-500 mt-2 flex-shrink-0" />
+                    <span><b>Smart Notes:</b> Write key concepts, common confusion points, one example question, and a personal mistake to avoid.</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <div className="w-1.5 h-1.5 rounded-full bg-green-500 mt-2 flex-shrink-0" />
+                    <span><b>Review Experiments:</b> Ask 3 questions: What was changed? What was measured? What should be kept the same?</span>
+                  </li>
+                </ul>
+              </div>
+
+              <div className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100">
+                <div className="w-12 h-12 bg-orange-50 rounded-2xl flex items-center justify-center mb-6">
+                  <ListChecks className="w-6 h-6 text-orange-500" />
+                </div>
+                <h3 className="text-xl font-bold mb-4">Practice Strategy</h3>
+                <ul className="space-y-3 text-gray-600">
+                  <li className="flex items-start gap-2">
+                    <div className="w-1.5 h-1.5 rounded-full bg-orange-500 mt-2 flex-shrink-0" />
+                    <span><b>MCQs:</b> Expose misconceptions quickly. Review both wrong answers and <i>guessed</i> correct answers.</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <div className="w-1.5 h-1.5 rounded-full bg-orange-500 mt-2 flex-shrink-0" />
+                    <span><b>OEQs:</b> Test application. Ensure answers connect concept, evidence, and context exactly as asked.</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <div className="w-1.5 h-1.5 rounded-full bg-orange-500 mt-2 flex-shrink-0" />
+                    <span><b>Mistake Log:</b> Record topic, question type, what went wrong, and the corrected idea. Spot patterns.</span>
+                  </li>
                 </ul>
               </div>
 
               <div className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100">
                 <div className="w-12 h-12 bg-red-50 rounded-2xl flex items-center justify-center mb-6">
-                  <Target className="w-6 h-6 text-[#e60023]" />
+                  <AlertCircle className="w-6 h-6 text-red-500" />
                 </div>
-                <h3 className="text-xl font-bold mb-4">Answering Techniques (CER)</h3>
-                <p className="text-gray-600 leading-relaxed mb-4">
-                  For Booklet B (Open-Ended Questions), students must master the CER framework to score full marks:
-                </p>
+                <h3 className="text-xl font-bold mb-4">Common Mistakes to Avoid</h3>
                 <ul className="space-y-3 text-gray-600">
-                  <li className="flex gap-2">
-                    <span className="font-bold text-[#e60023]">C</span>
-                    <span><b>Claim:</b> Directly answer the question based on observation.</span>
+                  <li className="flex items-start gap-2">
+                    <div className="w-1.5 h-1.5 rounded-full bg-red-500 mt-2 flex-shrink-0" />
+                    <span><b>Passive Rereading:</b> Don't just read. Close the book and explain out loud, draw it, or answer a question from memory (Retrieval Practice).</span>
                   </li>
-                  <li className="flex gap-2">
-                    <span className="font-bold text-[#e60023]">E</span>
-                    <span><b>Evidence:</b> Cite specific data or observations from the given experiment/scenario.</span>
+                  <li className="flex items-start gap-2">
+                    <div className="w-1.5 h-1.5 rounded-full bg-red-500 mt-2 flex-shrink-0" />
+                    <span><b>Over-Helping:</b> Parents shouldn't feed answers. Prompt instead: "What topic is this?", "What does the graph show?"</span>
                   </li>
-                  <li className="flex gap-2">
-                    <span className="font-bold text-[#e60023]">R</span>
-                    <span><b>Reasoning:</b> Link the evidence back to the underlying scientific concept (e.g., evaporation, heat transfer).</span>
+                  <li className="flex items-start gap-2">
+                    <div className="w-1.5 h-1.5 rounded-full bg-red-500 mt-2 flex-shrink-0" />
+                    <span><b>Ignoring Patterns:</b> Don't just pile up completed papers. Analyze if marks are lost due to content, misreading, or experimental setup issues.</span>
                   </li>
                 </ul>
               </div>
